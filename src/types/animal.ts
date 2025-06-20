@@ -1,7 +1,26 @@
+import { type ActionType } from '@/types';
+
 export type AnimalType = 'dog';
 export type AnimalSize = 'small' | 'medium' | 'large';
 export type AnimalAge = 'puppy' | 'adult' | 'senior';
 export type AnimalStatus = 'healthy' | 'needs_care' | 'ready_for_adoption' | 'sick' | 'recovering';
+
+export type AnimationName = 
+  | 'idle' | 'barking' | 'bite' | 'dying' | 'jump' | 'running' | 'walking' 
+  | 'playing' | 'standing' | 'sitting' | 'sleeping' | 'hurt' | 'laydown' 
+  | 'sit' | 'sleep' | 'bark';
+
+export interface AnimationConfig {
+  duration: number;
+  loop: boolean;
+  frames: string[]; // Array of frame file paths relative to sprite base path
+}
+
+export interface BreedAnimationData {
+  defaultIdle: AnimationName;
+  actionMappings: Record<ActionType, AnimationName>;
+  animations: Partial<Record<AnimationName, AnimationConfig>>;
+}
 
 export interface Animal {
   id: string;
@@ -52,7 +71,16 @@ export interface AnimalBreed {
   adoptionDifficulty: number; // Affects how long they take to get adoption ready
   specialTraits?: string[];
   availableColors: string[]; // List of colors available for this breed
+  animationData: BreedAnimationData; // animation configuration for this breed
 }
+
+// Helper function to generate frame paths for an animation
+const generateFramePaths = (animationName: AnimationName, frameCount: number): string[] => {
+  const animationNameCap = animationName.charAt(0).toUpperCase() + animationName.slice(1);
+  return Array.from({ length: frameCount }, (_, i) => 
+    `${animationName}/${animationNameCap}${i + 1}.png`
+  );
+};
 
 // Predefined animal data
 export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
@@ -65,7 +93,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.0,
     adoptionDifficulty: 1.1,
     specialTraits: ['independent', 'loyal', 'aloof'],
-    availableColors: ['black', 'red', 'tan']
+    availableColors: ['black', 'red', 'tan'],
+    animationData: {
+      defaultIdle: 'standing',
+      actionMappings: {
+        'idle': 'standing',
+        'feed': 'sitting',
+        'walk': 'walking',
+        'play': 'barking',
+        'medical': 'sleeping',
+        'exercise': 'standing',
+        'grooming': 'standing',
+        'training': 'standing',
+        'socialization': 'standing'
+      },
+      animations: {
+        standing: { duration: 600, loop: true, frames: generateFramePaths('standing', 3) },
+        sitting: { duration: 1800, loop: false, frames: generateFramePaths('sitting', 9) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        barking: { duration: 800, loop: false, frames: generateFramePaths('barking', 4) },
+        sleeping: { duration: 2800, loop: false, frames: generateFramePaths('sleeping', 14) }
+      }
+    }
   },
   'bloodhound': {
     name: 'Bloodhound',
@@ -76,7 +125,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
     specialTraits: ['affectionate', 'good_with_kids', 'independent'],
-    availableColors: ['black', 'orange', 'red']
+    availableColors: ['black', 'orange', 'red'],
+    animationData: {
+      defaultIdle: 'standing',
+      actionMappings: {
+        'idle': 'standing',
+        'feed': 'sitting',
+        'walk': 'walking',
+        'play': 'barking',
+        'medical': 'sleeping',
+        'exercise': 'standing',
+        'grooming': 'standing',
+        'training': 'standing',
+        'socialization': 'standing'
+      },
+      animations: {
+        standing: { duration: 800, loop: true, frames: generateFramePaths('standing', 4) },
+        sitting: { duration: 1800, loop: false, frames: generateFramePaths('sitting', 9) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        barking: { duration: 800, loop: false, frames: generateFramePaths('barking', 4) },
+        sleeping: { duration: 2600, loop: false, frames: generateFramePaths('sleeping', 13) }
+      }
+    }
   },
   'bull_terrier': {
     name: 'Bull Terrier',
@@ -87,7 +157,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8,
     specialTraits: ['playful', 'affectionate', 'small_space_friendly'],
-    availableColors: ['white', 'black']
+    availableColors: ['white', 'black'],
+    animationData: {
+      defaultIdle: 'idle',
+      actionMappings: {
+        'idle': 'idle',
+        'feed': 'sit',
+        'walk': 'walking',
+        'play': 'bark',
+        'medical': 'hurt',
+        'exercise': 'idle',
+        'grooming': 'idle',
+        'training': 'idle',
+        'socialization': 'idle'
+      },
+      animations: {
+        idle: { duration: 800, loop: true, frames: generateFramePaths('idle', 4) },
+        sit: { duration: 800, loop: false, frames: generateFramePaths('sit', 4) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        bark: { duration: 1200, loop: false, frames: generateFramePaths('bark', 6) },
+        hurt: { duration: 800, loop: false, frames: generateFramePaths('hurt', 4) }
+      }
+    }
   },
   'chihuahua': {
     name: 'Chihuahua',
@@ -98,7 +189,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 0.8,
     adoptionDifficulty: 1.1,
     specialTraits: ['small_space_friendly', 'protective', 'needs_patience'],
-    availableColors: ['black', 'gray', 'tan']
+    availableColors: ['black', 'gray', 'tan'],
+    animationData: {
+      defaultIdle: 'idle',
+      actionMappings: {
+        'idle': 'idle',
+        'feed': 'sit',
+        'walk': 'walking',
+        'play': 'bark',
+        'medical': 'hurt',
+        'exercise': 'idle',
+        'grooming': 'idle',
+        'training': 'idle',
+        'socialization': 'idle'
+      },
+      animations: {
+        idle: { duration: 800, loop: true, frames: generateFramePaths('idle', 4) },
+        sit: { duration: 1000, loop: false, frames: generateFramePaths('sit', 5) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        bark: { duration: 1200, loop: false, frames: generateFramePaths('bark', 6) },
+        hurt: { duration: 800, loop: false, frames: generateFramePaths('hurt', 4) }
+      }
+    }
   },
   'corgi': {
     name: 'Corgi',
@@ -109,7 +221,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
     specialTraits: ['small_space_friendly', 'protective', 'playful'],
-    availableColors: ['black', 'orange', 'spotted', 'wizard']
+    availableColors: ['black', 'orange', 'spotted', 'wizard'],
+    animationData: {
+      defaultIdle: 'idle',
+      actionMappings: {
+        'idle': 'idle',
+        'feed': 'sit',
+        'walk': 'walking',
+        'play': 'bark',
+        'medical': 'hurt',
+        'exercise': 'idle',
+        'grooming': 'idle',
+        'training': 'idle',
+        'socialization': 'idle'
+      },
+      animations: {
+        idle: { duration: 800, loop: true, frames: generateFramePaths('idle', 4) },
+        sit: { duration: 1000, loop: false, frames: generateFramePaths('sit', 5) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        bark: { duration: 1200, loop: false, frames: generateFramePaths('bark', 6) },
+        hurt: { duration: 800, loop: false, frames: generateFramePaths('hurt', 4) }
+      }
+    }
   },
   'dalmation': {
     name: 'Dalmation',
@@ -120,7 +253,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
     specialTraits: ['affectionate', 'good_with_kids', 'independent'],
-    availableColors: ['black', 'brown', 'tricolor']
+    availableColors: ['black', 'brown', 'tricolor'],
+    animationData: {
+      defaultIdle: 'standing',
+      actionMappings: {
+        'idle': 'standing',
+        'feed': 'sitting',
+        'walk': 'walking',
+        'play': 'barking',
+        'medical': 'sleeping',
+        'exercise': 'standing',
+        'grooming': 'standing',
+        'training': 'standing',
+        'socialization': 'standing'
+      },
+      animations: {
+        standing: { duration: 1800, loop: true, frames: generateFramePaths('standing', 9) },
+        sitting: { duration: 2000, loop: false, frames: generateFramePaths('sitting', 10) },
+        walking: { duration: 1400, loop: false, frames: generateFramePaths('walking', 7) },
+        barking: { duration: 800, loop: false, frames: generateFramePaths('barking', 4) },
+        sleeping: { duration: 2800, loop: false, frames: generateFramePaths('sleeping', 14) }
+      }
+    }
   },
   'doberman': {
     name: 'Doberman',
@@ -131,7 +285,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
     specialTraits: ['affectionate', 'good_with_kids', 'independent'],
-    availableColors: ['black', 'gray', 'red']
+    availableColors: ['black', 'gray', 'red'],
+    animationData: {
+      defaultIdle: 'standing',
+      actionMappings: {
+        'idle': 'standing',
+        'feed': 'sitting',
+        'walk': 'walking',
+        'play': 'barking',
+        'medical': 'sleeping',
+        'exercise': 'standing',
+        'grooming': 'standing',
+        'training': 'standing',
+        'socialization': 'standing'
+      },
+      animations: {
+        standing: { duration: 1000, loop: true, frames: generateFramePaths('standing', 5) },
+        sitting: { duration: 1600, loop: false, frames: generateFramePaths('sitting', 8) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        barking: { duration: 800, loop: false, frames: generateFramePaths('barking', 4) },
+        sleeping: { duration: 3200, loop: false, frames: generateFramePaths('sleeping', 16) }
+      }
+    }
   },
   'german_shepherd': {
     name: 'German Shepherd',
@@ -142,7 +317,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
     specialTraits: ['affectionate', 'good_with_kids', 'independent'],
-    availableColors: ['black', 'gray', 'panda']
+    availableColors: ['black', 'gray', 'panda'],
+    animationData: {
+      defaultIdle: 'standing',
+      actionMappings: {
+        'idle': 'standing',
+        'feed': 'sitting',
+        'walk': 'walking',
+        'play': 'barking',
+        'medical': 'sleeping',
+        'exercise': 'standing',
+        'grooming': 'standing',
+        'training': 'standing',
+        'socialization': 'standing'
+      },
+      animations: {
+        standing: { duration: 1000, loop: true, frames: generateFramePaths('standing', 5) },
+        sitting: { duration: 2200, loop: false, frames: generateFramePaths('sitting', 11) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        barking: { duration: 800, loop: false, frames: generateFramePaths('barking', 4) },
+        sleeping: { duration: 3000, loop: false, frames: generateFramePaths('sleeping', 15) }
+      }
+    }
   },
   'great_dane': {
     name: 'Great Dane',
@@ -153,7 +349,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
     specialTraits: ['affectionate', 'good_with_kids', 'independent'],
-    availableColors: ['black', 'gray', 'tan']
+    availableColors: ['black', 'gray', 'tan'],
+    animationData: {
+      defaultIdle: 'standing',
+      actionMappings: {
+        'idle': 'standing',
+        'feed': 'sitting',
+        'walk': 'walking',
+        'play': 'barking',
+        'medical': 'sleeping',
+        'exercise': 'standing',
+        'grooming': 'standing',
+        'training': 'standing',
+        'socialization': 'standing'
+      },
+      animations: {
+        standing: { duration: 800, loop: true, frames: generateFramePaths('standing', 4) },
+        sitting: { duration: 2000, loop: false, frames: generateFramePaths('sitting', 10) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        barking: { duration: 800, loop: false, frames: generateFramePaths('barking', 4) },
+        sleeping: { duration: 3000, loop: false, frames: generateFramePaths('sleeping', 15) }
+      }
+    }
   },
   'greyhound': {
     name: 'Greyhound',
@@ -164,7 +381,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
     specialTraits: ['affectionate', 'good_with_kids', 'independent'],
-    availableColors: ['black', 'tan', 'white']
+    availableColors: ['black', 'tan', 'white'],
+    animationData: {
+      defaultIdle: 'standing',
+      actionMappings: {
+        'idle': 'standing',
+        'feed': 'sitting',
+        'walk': 'walking',
+        'play': 'barking',
+        'medical': 'sleeping',
+        'exercise': 'standing',
+        'grooming': 'standing',
+        'training': 'standing',
+        'socialization': 'standing'
+      },
+      animations: {
+        standing: { duration: 800, loop: true, frames: generateFramePaths('standing', 4) },
+        sitting: { duration: 2200, loop: false, frames: generateFramePaths('sitting', 11) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        barking: { duration: 800, loop: false, frames: generateFramePaths('barking', 4) },
+        sleeping: { duration: 3000, loop: false, frames: generateFramePaths('sleeping', 15) }
+      }
+    }
   },
   'siberian_husky': {
     name: 'Siberian Husky',
@@ -175,7 +413,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
     specialTraits: ['affectionate', 'good_with_kids', 'independent'],
-    availableColors: ['blue', 'gray', 'brown']
+    availableColors: ['blue', 'gray', 'brown'],
+    animationData: {
+      defaultIdle: 'standing',
+      actionMappings: {
+        'idle': 'standing',
+        'feed': 'sitting',
+        'walk': 'walking',
+        'play': 'barking',
+        'medical': 'sleeping',
+        'exercise': 'standing',
+        'grooming': 'standing',
+        'training': 'standing',
+        'socialization': 'standing'
+      },
+      animations: {
+        standing: { duration: 1000, loop: true, frames: generateFramePaths('standing', 5) },
+        sitting: { duration: 2000, loop: false, frames: generateFramePaths('sitting', 10) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        barking: { duration: 800, loop: false, frames: generateFramePaths('barking', 4) },
+        sleeping: { duration: 2800, loop: false, frames: generateFramePaths('sleeping', 14) }
+      }
+    }
   },
   'miniature_poodle': {
     name: 'Miniature Poodle',
@@ -186,7 +445,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
     specialTraits: ['small_space_friendly', 'protective', 'playful'],
-    availableColors: ['apricot', 'ash', 'ivory']
+    availableColors: ['apricot', 'ash', 'ivory'],
+    animationData: {
+      defaultIdle: 'idle',
+      actionMappings: {
+        'idle': 'idle',
+        'feed': 'sit',
+        'walk': 'walking',
+        'play': 'bark',
+        'medical': 'hurt',
+        'exercise': 'idle',
+        'grooming': 'idle',
+        'training': 'idle',
+        'socialization': 'idle'
+      },
+      animations: {
+        idle: { duration: 800, loop: true, frames: generateFramePaths('idle', 4) },
+        sit: { duration: 1000, loop: false, frames: generateFramePaths('sit', 5) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        bark: { duration: 1200, loop: false, frames: generateFramePaths('bark', 6) },
+        hurt: { duration: 800, loop: false, frames: generateFramePaths('hurt', 4) }
+      }
+    }
   },
   'mountain_dog': {
     name: 'Mountain Dog',
@@ -197,7 +477,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
     specialTraits: ['affectionate', 'good_with_kids', 'independent'],
-    availableColors: ['gray', 'black', 'brown']
+    availableColors: ['gray', 'black', 'brown'],
+    animationData: {
+      defaultIdle: 'standing',
+      actionMappings: {
+        'idle': 'standing',
+        'feed': 'sitting',
+        'walk': 'walking',
+        'play': 'barking',
+        'medical': 'sleeping',
+        'exercise': 'standing',
+        'grooming': 'standing',
+        'training': 'standing',
+        'socialization': 'standing'
+      },
+      animations: {
+        standing: { duration: 800, loop: true, frames: generateFramePaths('standing', 4) },
+        sitting: { duration: 2400, loop: false, frames: generateFramePaths('sitting', 12) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        barking: { duration: 800, loop: false, frames: generateFramePaths('barking', 4) },
+        sleeping: { duration: 3200, loop: false, frames: generateFramePaths('sleeping', 16) }
+      }
+    }
   },
   'papillion': {
     name: 'Papillion',
@@ -208,7 +509,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
     specialTraits: ['small_space_friendly', 'protective', 'playful'],
-    availableColors: ['black', 'orange', 'white']
+    availableColors: ['black', 'orange', 'white'],
+    animationData: {
+      defaultIdle: 'idle',
+      actionMappings: {
+        'idle': 'idle',
+        'feed': 'sit',
+        'walk': 'walking',
+        'play': 'bark',
+        'medical': 'hurt',
+        'exercise': 'idle',
+        'grooming': 'idle',
+        'training': 'idle',
+        'socialization': 'idle'
+      },
+      animations: {
+        idle: { duration: 800, loop: true, frames: generateFramePaths('idle', 4) },
+        sit: { duration: 1000, loop: false, frames: generateFramePaths('sit', 5) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        bark: { duration: 1200, loop: false, frames: generateFramePaths('bark', 6) },
+        hurt: { duration: 800, loop: false, frames: generateFramePaths('hurt', 4) }
+      }
+    }
   },
   'pug': {
     name: 'Pug',
@@ -219,7 +541,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
     specialTraits: ['small_space_friendly', 'protective', 'playful'],
-    availableColors: ['apricot', 'brown']
+    availableColors: ['apricot', 'brown'],
+    animationData: {
+      defaultIdle: 'idle',
+      actionMappings: {
+        'idle': 'idle',
+        'feed': 'sit',
+        'walk': 'walking',
+        'play': 'bark',
+        'medical': 'hurt',
+        'exercise': 'idle',
+        'grooming': 'idle',
+        'training': 'idle',
+        'socialization': 'idle'
+      },
+      animations: {
+        idle: { duration: 800, loop: true, frames: generateFramePaths('idle', 4) },
+        sit: { duration: 1000, loop: false, frames: generateFramePaths('sit', 5) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        bark: { duration: 1200, loop: false, frames: generateFramePaths('bark', 6) },
+        hurt: { duration: 800, loop: false, frames: generateFramePaths('hurt', 4) }
+      }
+    }
   },
   'shiba_inu': {
     name: 'Shiba Inu',
@@ -230,7 +573,28 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
     specialTraits: ['small_space_friendly', 'protective', 'playful'],
-    availableColors: ['black', 'cream', 'orange']
+    availableColors: ['black', 'cream', 'orange'],
+    animationData: {
+      defaultIdle: 'standing',
+      actionMappings: {
+        'idle': 'standing',
+        'feed': 'sitting',
+        'walk': 'walking',
+        'play': 'barking',
+        'medical': 'sleeping',
+        'exercise': 'standing',
+        'grooming': 'standing',
+        'training': 'standing',
+        'socialization': 'standing'
+      },
+      animations: {
+        standing: { duration: 600, loop: true, frames: generateFramePaths('standing', 3) },
+        sitting: { duration: 1800, loop: false, frames: generateFramePaths('sitting', 9) },
+        walking: { duration: 1600, loop: false, frames: generateFramePaths('walking', 8) },
+        barking: { duration: 800, loop: false, frames: generateFramePaths('barking', 4) },
+        sleeping: { duration: 2800, loop: false, frames: generateFramePaths('sleeping', 14) }
+      }
+    }
   },
 };
 

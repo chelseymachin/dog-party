@@ -6,7 +6,8 @@ export type ActionType =
   | 'exercise' 
   | 'grooming'
   | 'training'
-  | 'socialization';
+  | 'socialization'
+  | 'idle';
 
 export interface ActionCost {
   playerEnergy: number;
@@ -194,6 +195,17 @@ export const ACTION_DEFINITIONS: Record<ActionType, {
       adoptionReadiness: 10,
       experience: 3,
       improvesTemperament: true,
+    }
+  },
+  idle: {
+    name: 'Idle',
+    description: 'Let the animal rest and recover energy',
+    icon: '😴',
+    baseCost: {
+      playerEnergy: 0,
+      animalEnergy: 0,
+    },
+    baseEffect: {
     }
   }
 };

@@ -308,7 +308,6 @@ export const useDayStore = create<DayStore>()(
             get().completeGoal(goal.id);
           }
         });
-        console.log(state.currentDayGoals)
         
         return newlyCompleted;
       },
