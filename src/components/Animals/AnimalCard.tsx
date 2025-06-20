@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Card, 
   Group, 
@@ -14,13 +14,26 @@ import { Heart, Zap, Sparkles } from 'lucide-react';
 import { type Animal } from '@/types';
 import { useUIStore } from '@/stores';
 import ActionButton from './ActionButton';
+import AnimalSprite from './AnimalSprite';
 
 interface AnimalCardProps {
   animal: Animal;
 }
 
 const AnimalCard: React.FC<AnimalCardProps> = ({ animal }) => {
+  const [currentAnimation, setCurrentAnimation] = useState<'idle' | 'feeding' | 'walking' | 'medical' | 'playing'>('idle');
+  const lastActionResult = useUIStore(state => state.lastActionResult);
   const { openModal, selectAnimal } = useUIStore();
+
+  useEffect(() => {
+    if (lastActionResult?.animalId === animal.id && lastActionResult.success) {
+      setCurrentAnimation(lastActionResult.action as any);
+    }
+  }, [lastActionResult, animal.id]);
+
+  const handleAnimationComplete = () => {
+    setCurrentAnimation('idle');
+  };
   
   const getStatusColor = () => {
     switch (animal.status) {
@@ -82,9 +95,18 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ animal }) => {
       {/* Header */}
       <Flex justify="space-between" align="flex-start" mb="md">
         <div>
+          <Group justify="left" mb="md">
+            <AnimalSprite
+              breed={animal.breed}
+              color={animal.color}
+              animation={currentAnimation}
+              size={64}
+              onAnimationComplete={handleAnimationComplete}
+            />
+          </Group>
           <Group gap="xs" mb={4}>
             <Text size="lg" fw={600} c="gray.8">
-              🐕 {animal.name}
+              {animal.name}
             </Text>
             {animal.needsMedical && (
               <Tooltip label="Needs medical attention">

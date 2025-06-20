@@ -93,16 +93,15 @@ export const useGameActions = () => {
         
         // Perform the action
         const result = animalStore.performAction(animalId, actionType, actionCost);
-        console.log(result)
-
+        
         if (result.success) {
           
+          uiStore.recordActionResult(animalId, action, true);
           // Grant experience
           const expResult = playerStore.gainExperience(result.experienceGained);
           
           // Record the action for day tracking
           const newlyCompleted = dayStore.recordAction(actionType, animalId);
-          console.log(newlyCompleted)
 
           newlyCompleted.forEach((goalId: string) => {
             const goal = dayStore.currentDayGoals.find(g => g.id === goalId);

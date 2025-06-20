@@ -1,4 +1,4 @@
-export type AnimalType = 'dog' | 'cat';
+export type AnimalType = 'dog';
 export type AnimalSize = 'small' | 'medium' | 'large';
 export type AnimalAge = 'puppy' | 'adult' | 'senior';
 export type AnimalStatus = 'healthy' | 'needs_care' | 'ready_for_adoption' | 'sick' | 'recovering';
@@ -7,6 +7,7 @@ export interface Animal {
   id: string;
   name: string;
   type: AnimalType;
+  color: string;
   breed: string;
   size: AnimalSize;
   age: AnimalAge;
@@ -50,6 +51,7 @@ export interface AnimalBreed {
   happinessTendency: number; // 0.8-1.2 multiplier for happiness changes
   adoptionDifficulty: number; // Affects how long they take to get adoption ready
   specialTraits?: string[];
+  availableColors: string[]; // List of colors available for this breed
 }
 
 // Predefined animal data
@@ -62,7 +64,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 1.0,
     happinessTendency: 1.0,
     adoptionDifficulty: 1.1,
-    specialTraits: ['independent', 'loyal', 'aloof']
+    specialTraits: ['independent', 'loyal', 'aloof'],
+    availableColors: ['black', 'red', 'tan']
   },
   'bloodhound': {
     name: 'Bloodhound',
@@ -72,7 +75,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent']
+    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    availableColors: ['black', 'orange', 'red']
   },
   'bull_terrier': {
     name: 'Bull Terrier',
@@ -82,7 +86,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.8,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8,
-    specialTraits: ['playful', 'affectionate', 'small_space_friendly']
+    specialTraits: ['playful', 'affectionate', 'small_space_friendly'],
+    availableColors: ['white', 'black']
   },
   'chihuahua': {
     name: 'Chihuahua',
@@ -92,7 +97,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 0.8,
     adoptionDifficulty: 1.1,
-    specialTraits: ['small_space_friendly', 'protective', 'needs_patience']
+    specialTraits: ['small_space_friendly', 'protective', 'needs_patience'],
+    availableColors: ['black', 'gray', 'tan']
   },
   'corgi': {
     name: 'Corgi',
@@ -102,7 +108,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 1.0,
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
-    specialTraits: ['small_space_friendly', 'protective', 'playful']
+    specialTraits: ['small_space_friendly', 'protective', 'playful'],
+    availableColors: ['black', 'orange', 'spotted', 'wizard']
   },
   'dalmation': {
     name: 'Dalmation',
@@ -112,7 +119,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent']
+    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    availableColors: ['black', 'brown', 'tricolor']
   },
   'doberman': {
     name: 'Doberman',
@@ -122,7 +130,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent']
+    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    availableColors: ['black', 'gray', 'red']
   },
   'german_shepherd': {
     name: 'German Shepherd',
@@ -132,7 +141,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent']
+    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    availableColors: ['black', 'gray', 'panda']
   },
   'great_dane': {
     name: 'Great Dane',
@@ -142,7 +152,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent']
+    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    availableColors: ['black', 'gray', 'tan']
   },
   'greyhound': {
     name: 'Greyhound',
@@ -152,7 +163,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent']
+    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    availableColors: ['black', 'tan', 'white']
   },
   'siberian_husky': {
     name: 'Siberian Husky',
@@ -162,7 +174,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent']
+    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    availableColors: ['blue', 'gray', 'brown']
   },
   'miniature_poodle': {
     name: 'Miniature Poodle',
@@ -172,7 +185,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 1.0,
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
-    specialTraits: ['small_space_friendly', 'protective', 'playful']
+    specialTraits: ['small_space_friendly', 'protective', 'playful'],
+    availableColors: ['apricot', 'ash', 'ivory']
   },
   'mountain_dog': {
     name: 'Mountain Dog',
@@ -182,7 +196,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent']
+    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    availableColors: ['gray', 'black', 'brown']
   },
   'papillion': {
     name: 'Papillion',
@@ -192,7 +207,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 1.0,
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
-    specialTraits: ['small_space_friendly', 'protective', 'playful']
+    specialTraits: ['small_space_friendly', 'protective', 'playful'],
+    availableColors: ['black', 'orange', 'white']
   },
   'pug': {
     name: 'Pug',
@@ -202,7 +218,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 1.0,
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
-    specialTraits: ['small_space_friendly', 'protective', 'playful']
+    specialTraits: ['small_space_friendly', 'protective', 'playful'],
+    availableColors: ['apricot', 'brown']
   },
   'shiba_inu': {
     name: 'Shiba Inu',
@@ -212,7 +229,8 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 1.0,
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
-    specialTraits: ['small_space_friendly', 'protective', 'playful']
+    specialTraits: ['small_space_friendly', 'protective', 'playful'],
+    availableColors: ['black', 'cream', 'orange']
   },
 };
 
