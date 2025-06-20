@@ -1,3 +1,5 @@
+// src/components/Animals/AnimalModal.tsx
+
 import React, { useState, useEffect } from 'react';
 import { 
   Stack, 
@@ -31,7 +33,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
-import { useUIStore, useAnimalStore } from '@/stores';
+import { useUIStore, useAnimalStore, useGameStore } from '@/stores';
 import { type ActionType } from '@/types';
 import AnimalSprite from './AnimalSprite';
 import ActionButton from './ActionButton';
@@ -128,7 +130,7 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
   };
 
   return (
-    <ScrollArea style={{ height: '80vh' }}>
+    <ScrollArea style={{ maxHeight: '80vh' }}>
       <Stack gap="lg">
         {/* Header with Animal Info */}
         <Paper p="lg" radius="md" bg="pink.0" style={{ border: '1px solid var(--mantine-color-pink-2)', marginTop: '16px' }}>
@@ -137,7 +139,7 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
               <AnimalSprite
                 breed={animal.breed}
                 color={animal.color}
-                animation={currentAnimation as ActionType} // Cast currentAnimation to ActionType
+                animation={currentAnimation as ActionType} // Type assertion to match ActionType
                 size={96}
                 onAnimationComplete={handleAnimationComplete}
               />
@@ -202,6 +204,99 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
             </Alert>
           )}
         </Paper>
+
+        {/* Action Buttons - Moved up to be right after animal info */}
+        <Card padding="md" radius="md" withBorder>
+          <Group justify="space-between" mb="md" style={{ cursor: 'pointer' }} onClick={() => toggleSection('actions')}>
+            <Text size="lg" fw={600} c="gray.8">
+              Care Actions
+            </Text>
+            <ActionIcon variant="subtle" size="sm">
+              {expandedSections.actions ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            </ActionIcon>
+          </Group>
+
+          <Collapse in={expandedSections.actions}>
+
+          {/* Priority Actions */}
+          {animal.needsMedical && (
+            <Alert
+              icon={<AlertTriangle size={16} />}
+              title="Medical Attention Required"
+              color="red"
+              variant="light"
+              mb="md"
+            >
+              <Text size="sm" mb="xs">
+                {animal.name} needs immediate medical care!
+              </Text>
+              <ActionButton
+                animalId={animal.id}
+                action="medical"
+                size="sm"
+                variant="filled"
+              />
+            </Alert>
+          )}
+
+          {/* Primary Actions */}
+          <Text size="md" fw={500} mb="sm" c="gray.7">Essential Care</Text>
+          <SimpleGrid cols={2} spacing="sm" mb="lg">
+            <ActionButton
+              animalId={animal.id}
+              action="feed"
+              size="md"
+              fullWidth
+            />
+            <ActionButton
+              animalId={animal.id}
+              action="walk"
+              size="md"
+              fullWidth
+            />
+          </SimpleGrid>
+
+          {/* Secondary Actions */}
+          <Text size="md" fw={500} mb="sm" c="gray.7">Additional Care</Text>
+          <SimpleGrid cols={3} spacing="sm" mb="lg">
+            <ActionButton
+              animalId={animal.id}
+              action="play"
+              size="sm"
+              fullWidth
+            />
+            <ActionButton
+              animalId={animal.id}
+              action="grooming"
+              size="sm"
+              fullWidth
+            />
+            <ActionButton
+              animalId={animal.id}
+              action="training"
+              size="sm"
+              fullWidth
+            />
+          </SimpleGrid>
+
+          {/* Advanced Actions */}
+          <Text size="md" fw={500} mb="sm" c="gray.7">Advanced Care</Text>
+          <SimpleGrid cols={2} spacing="sm">
+            <ActionButton
+              animalId={animal.id}
+              action="exercise"
+              size="sm"
+              fullWidth
+            />
+            <ActionButton
+              animalId={animal.id}
+              action="socialization"
+              size="sm"
+              fullWidth
+            />
+          </SimpleGrid>
+          </Collapse>
+        </Card>
 
         {/* Stats Overview */}
         <Card padding="md" radius="md" withBorder>
@@ -319,29 +414,6 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
           </Collapse>
         </Card>
 
-        {/* Backstory */}
-        {animal.backstory && (
-          <Card padding="md" radius="md" withBorder>
-            <Group justify="space-between" mb="md" style={{ cursor: 'pointer' }} onClick={() => toggleSection('backstory')}>
-              <Group gap="xs">
-                <Info size={18} />
-                <Text size="lg" fw={600} c="gray.8">
-                  {animal.name}'s Story
-                </Text>
-              </Group>
-              <ActionIcon variant="subtle" size="sm">
-                {expandedSections.backstory ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-              </ActionIcon>
-            </Group>
-
-            <Collapse in={expandedSections.backstory}>
-              <Text size="sm" c="gray.7" style={{ lineHeight: 1.6 }}>
-                {animal.backstory}
-              </Text>
-            </Collapse>
-          </Card>
-        )}
-
         {/* Temperament & Special Needs */}
         {(animal.temperament.length > 0 || animal.specialNeeds.length > 0) && (
           <Card padding="md" radius="md" withBorder>
@@ -355,6 +427,16 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
             </Group>
             
             <Collapse in={expandedSections.personality}>
+            {animal.backstory && (
+                <div style={{ marginBottom: 12 }}>
+                  <Text size="sm" fw={500} c="gray.7" mb="xs">Backstory:</Text>
+                  <Group gap="xs">
+                    <Text size="sm" c="gray.7" style={{ lineHeight: 1.6 }}>
+                      {animal.backstory}
+                    </Text>
+                  </Group>
+                </div>
+              )}
               {animal.temperament.length > 0 && (
                 <div style={{ marginBottom: 12 }}>
                   <Text size="sm" fw={500} c="gray.7" mb="xs">Temperament:</Text>
@@ -385,99 +467,6 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
         )}
 
         <Divider />
-
-        {/* Action Buttons */}
-        <Card padding="md" radius="md" withBorder>
-          <Group justify="space-between" mb="md" style={{ cursor: 'pointer' }} onClick={() => toggleSection('actions')}>
-            <Text size="lg" fw={600} c="gray.8">
-              Care Actions
-            </Text>
-            <ActionIcon variant="subtle" size="sm">
-              {expandedSections.actions ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </ActionIcon>
-          </Group>
-
-          <Collapse in={expandedSections.actions}>
-
-          {/* Priority Actions */}
-          {animal.needsMedical && (
-            <Alert
-              icon={<AlertTriangle size={16} />}
-              title="Medical Attention Required"
-              color="red"
-              variant="light"
-              mb="md"
-            >
-              <Text size="sm" mb="xs">
-                {animal.name} needs immediate medical care!
-              </Text>
-              <ActionButton
-                animalId={animal.id}
-                action="medical"
-                size="sm"
-                variant="filled"
-              />
-            </Alert>
-          )}
-
-          {/* Primary Actions */}
-          <Text size="md" fw={500} mb="sm" c="gray.7">Essential Care</Text>
-          <SimpleGrid cols={2} spacing="sm" mb="lg">
-            <ActionButton
-              animalId={animal.id}
-              action="feed"
-              size="md"
-              fullWidth
-            />
-            <ActionButton
-              animalId={animal.id}
-              action="walk"
-              size="md"
-              fullWidth
-            />
-          </SimpleGrid>
-
-          {/* Secondary Actions */}
-          <Text size="md" fw={500} mb="sm" c="gray.7">Additional Care</Text>
-          <SimpleGrid cols={3} spacing="sm" mb="lg">
-            <ActionButton
-              animalId={animal.id}
-              action="play"
-              size="sm"
-              fullWidth
-            />
-            <ActionButton
-              animalId={animal.id}
-              action="grooming"
-              size="sm"
-              fullWidth
-            />
-            <ActionButton
-              animalId={animal.id}
-              action="training"
-              size="sm"
-              fullWidth
-            />
-          </SimpleGrid>
-
-          {/* Advanced Actions */}
-          <Text size="md" fw={500} mb="sm" c="gray.7">Advanced Care</Text>
-          <SimpleGrid cols={2} spacing="sm">
-            <ActionButton
-              animalId={animal.id}
-              action="exercise"
-              size="sm"
-              fullWidth
-            />
-            <ActionButton
-              animalId={animal.id}
-              action="socialization"
-              size="sm"
-              fullWidth
-            />
-          </SimpleGrid>
-          </Collapse>
-        </Card>
 
         {/* Close Button */}
         <Button 
