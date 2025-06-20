@@ -23,7 +23,7 @@ interface AnimalCardProps {
 const AnimalCard: React.FC<AnimalCardProps> = ({ animal }) => {
   const [currentAnimation, setCurrentAnimation] = useState<'idle' | 'feed' | 'walk' | 'medical' | 'play'>('idle');
   const lastActionResult = useUIStore(state => state.lastActionResult);
-  const { openModal, selectAnimal } = useUIStore();
+  const { openModal, selectAnimal, isMobile } = useUIStore();
 
   useEffect(() => {
     if (lastActionResult?.animalId === animal.id && lastActionResult.success) {
@@ -202,7 +202,7 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ animal }) => {
       />
       
       {/* Quick Actions */}
-      <SimpleGrid cols={2} spacing="xs" mb="xs">
+      <SimpleGrid cols={isMobile ? 1 : 2} spacing="xs" mb="xs">
         <ActionButton
           animalId={animal.id}
           action="feed"
@@ -218,17 +218,14 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ animal }) => {
           onClick={(e) => e.stopPropagation()}
         />
         {animal.needsMedical && (
-          <>
-            <ActionButton
-              animalId={animal.id}
-              action="medical"
-              size="xs"
-              fullWidth
-              variant="filled"
-              onClick={(e) => e.stopPropagation()}
-            />
-            <div /> {/* Empty cell for grid alignment */}
-          </>
+          <ActionButton
+            animalId={animal.id}
+            action="medical"
+            size="xs"
+            fullWidth
+            variant="filled"
+            onClick={(e) => e.stopPropagation()}
+          />
         )}
       </SimpleGrid>
       
