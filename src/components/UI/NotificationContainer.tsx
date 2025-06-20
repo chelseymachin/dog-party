@@ -73,7 +73,7 @@ const NotificationContainer: React.FC = () => {
       case 'animal_sick':
         return 'red';
       case 'achievement':
-        return 'purple';
+        return 'pink';
       case 'info':
       default:
         return 'blue';

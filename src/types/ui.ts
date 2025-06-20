@@ -129,7 +129,7 @@ export const createNotification = (
   title,
   message,
   timestamp: new Date(),
-  duration: type === 'error' ? 5000 : 3000,
+  duration: type === 'error' ? 3000 : 1500,
   ...options,
 });
 
