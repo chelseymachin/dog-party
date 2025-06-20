@@ -72,6 +72,8 @@ const Modal: React.FC = () => {
     const baseProps = {
       opened: !!activeModal,
       onClose: closeModal,
+      zIndex: 10000,
+      withinPortal: false,
       centered: true,
       overlayProps: {
         backgroundOpacity: 0.6,
@@ -170,7 +172,9 @@ const Modal: React.FC = () => {
   }
   
   return (
-    <MantineModal {...getModalProps()}>
+    <MantineModal 
+      {...getModalProps()}
+    >
       {renderModalContent()}
     </MantineModal>
   );

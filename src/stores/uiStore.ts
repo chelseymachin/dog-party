@@ -94,11 +94,13 @@ export const useUIStore = create<UIStore>()(
       
       // Modal management
       openModal: (modal: ModalType, data?: any) => {
-        set((state) => ({
-          activeModal: modal,
-          modalData: data,
-          modalHistory: [...state.modalHistory, modal],
-        }), false, 'openModal');
+        set((state) => {
+          return {
+            activeModal: modal,
+            modalData: data,
+            modalHistory: [...state.modalHistory, modal],
+          };
+        }, false, 'openModal');
       },
       
       closeModal: () => {

@@ -130,32 +130,23 @@ export const useGameActions = () => {
         uiStore.setActionInProgress(false);
       }
     },
-    
+
     // End the current day
-    endCurrentDay: () => {
+    endCurrentDay: async () => {
       uiStore.setDayTransitioning(true);
-      
+    
       try {
-        // End the day and get summary
         const summary = dayStore.endDay();
         
-        // Reset player energy
+        gameStore.incrementDay();
         playerStore.resetDailyEnergy();
-        
-        // Reset animal energy
         animalStore.resetAllAnimalEnergy();
         
-        // Apply daily maintenance
-        animalStore.dailyAnimalMaintenance();
+        uiStore.setDayTransitioning(false);
         
-        // Update game day
-        gameStore.incrementDay();
-        
-        // Show day end modal
         uiStore.openModal('day_end_summary', summary);
         
-        return summary;
-      } finally {
+      } catch (error) {
         uiStore.setDayTransitioning(false);
       }
     },

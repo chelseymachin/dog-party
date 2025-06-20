@@ -10,7 +10,7 @@ interface DayEndModalProps {
 const DayEndModal: React.FC<DayEndModalProps> = ({ summary }) => {
   const { closeModal } = useUIStore();
   const { startNewDay } = useGameActions();
-  
+    
   const handleStartNewDay = () => {
     startNewDay();
     closeModal();
