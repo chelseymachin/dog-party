@@ -366,7 +366,9 @@ export const useAnimalStore = create<AnimalStore>()(
         const breeds = Object.keys(ANIMAL_BREEDS);
         const breedKey = breeds[Math.floor(Math.random() * breeds.length)];
         const breed = ANIMAL_BREEDS[breedKey];
-        const color = breed.availableColors[0];
+
+        const colors = breed.availableColors;
+        const color = colors[Math.floor(Math.random() * colors.length)];
         
         const names = ['Buddy', 'Luna', 'Max', 'Bella', 'Charlie', 'Daisy', 'Rocky', 'Lily', 'Cooper', 'Ruby'];
         const name = names[Math.floor(Math.random() * names.length)];

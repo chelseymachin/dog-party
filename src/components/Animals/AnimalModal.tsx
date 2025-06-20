@@ -13,7 +13,6 @@ import {
   Flex,
   ActionIcon,
   Tooltip,
-  Divider,
   ScrollArea,
   Card,
   Alert,
@@ -23,6 +22,7 @@ import {
   Heart, 
   Zap, 
   Sparkles, 
+  Info,
   Home,
   Star,
   Clock,
@@ -40,7 +40,7 @@ interface AnimalModalProps {
 }
 
 const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
-  const { closeModal } = useUIStore();
+  const { closeModal, isMobile } = useUIStore();
   const animal = useAnimalStore(state => state.getAnimal(animalId));
   const adoptAnimal = useAnimalStore(state => state.adoptAnimal);
   const lastActionResult = useUIStore(state => state.lastActionResult);
@@ -127,8 +127,8 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
   };
 
   return (
-    <ScrollArea style={{ maxHeight: '80vh' }}>
-      <Stack gap="lg">
+    <ScrollArea.Autosize mah="80vh" mx="auto">
+      <Stack gap="lg" p="md">
         {/* Header with Animal Info */}
         <Paper p="lg" radius="md" bg="pink.0" style={{ border: '1px solid var(--mantine-color-pink-2)', marginTop: '16px' }}>
           <Flex justify="space-between" align="flex-start" mb="md">
@@ -136,7 +136,7 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
               <AnimalSprite
                 breed={animal.breed}
                 color={animal.color}
-                animation={currentAnimation as ActionType} // Type assertion to match ActionType
+                animation={currentAnimation as ActionType} // Type assertion to ensure compatibility
                 size={96}
                 onAnimationComplete={handleAnimationComplete}
               />
@@ -200,7 +200,7 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
           )}
         </Paper>
 
-        {/* Action Buttons - Moved up to be right after animal info */}
+        {/* Action Buttons */}
         <Card padding="md" radius="md" withBorder>
           <Group justify="space-between" mb="md" style={{ cursor: 'pointer' }} onClick={() => toggleSection('actions')}>
             <Text size="lg" fw={600} c="gray.8">
@@ -236,7 +236,7 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
 
           {/* Primary Actions */}
           <Text size="md" fw={500} mb="sm" c="gray.7">Essential Care</Text>
-          <SimpleGrid cols={2} spacing="sm" mb="lg">
+          <SimpleGrid cols={isMobile ? 1 : 2} spacing="sm" mb="lg">
             <ActionButton
               animalId={animal.id}
               action="feed"
@@ -253,7 +253,7 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
 
           {/* Secondary Actions */}
           <Text size="md" fw={500} mb="sm" c="gray.7">Additional Care</Text>
-          <SimpleGrid cols={3} spacing="sm" mb="lg">
+          <SimpleGrid cols={isMobile ? 1 : 3} spacing="sm" mb="lg">
             <ActionButton
               animalId={animal.id}
               action="play"
@@ -276,7 +276,7 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
 
           {/* Advanced Actions */}
           <Text size="md" fw={500} mb="sm" c="gray.7">Advanced Care</Text>
-          <SimpleGrid cols={2} spacing="sm">
+          <SimpleGrid cols={isMobile ? 1 : 2} spacing="sm">
             <ActionButton
               animalId={animal.id}
               action="exercise"
@@ -409,6 +409,29 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
           </Collapse>
         </Card>
 
+        {/* Backstory */}
+        {animal.backstory && (
+          <Card padding="md" radius="md" withBorder>
+            <Group justify="space-between" mb="md" style={{ cursor: 'pointer' }} onClick={() => toggleSection('backstory')}>
+              <Group gap="xs">
+                <Info size={18} />
+                <Text size="lg" fw={600} c="gray.8">
+                  {animal.name}'s Story
+                </Text>
+              </Group>
+              <ActionIcon variant="subtle" size="sm">
+                {expandedSections.backstory ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              </ActionIcon>
+            </Group>
+
+            <Collapse in={expandedSections.backstory}>
+              <Text size="sm" c="gray.7" style={{ lineHeight: 1.6 }}>
+                {animal.backstory}
+              </Text>
+            </Collapse>
+          </Card>
+        )}
+
         {/* Temperament & Special Needs */}
         {(animal.temperament.length > 0 || animal.specialNeeds.length > 0) && (
           <Card padding="md" radius="md" withBorder>
@@ -422,16 +445,6 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
             </Group>
             
             <Collapse in={expandedSections.personality}>
-            {animal.backstory && (
-                <div style={{ marginBottom: 12 }}>
-                  <Text size="sm" fw={500} c="gray.7" mb="xs">Backstory:</Text>
-                  <Group gap="xs">
-                    <Text size="sm" c="gray.7" style={{ lineHeight: 1.6 }}>
-                      {animal.backstory}
-                    </Text>
-                  </Group>
-                </div>
-              )}
               {animal.temperament.length > 0 && (
                 <div style={{ marginBottom: 12 }}>
                   <Text size="sm" fw={500} c="gray.7" mb="xs">Temperament:</Text>
@@ -461,8 +474,6 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
           </Card>
         )}
 
-        <Divider />
-
         {/* Close Button */}
         <Button 
           onClick={closeModal} 
@@ -473,7 +484,7 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
           Close
         </Button>
       </Stack>
-    </ScrollArea>
+    </ScrollArea.Autosize>
   );
 };
 
