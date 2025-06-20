@@ -335,7 +335,7 @@ export const useAnimalStore = create<AnimalStore>()(
         set((state) => ({
           animals: state.animals.map(animal => ({
             ...animal,
-            health: Math.max(0, animal.health - (animal.lastFed ? 5 : 15)),
+            health: Math.max(0, animal.health - (animal.lastFeed ? 5 : 15)),
           }))
         }), false, 'applyHungerDecay');
       },
@@ -390,9 +390,9 @@ export const useAnimalStore = create<AnimalStore>()(
           maxEnergy,
           energySpentToday: 0,
           needsMedical: Math.random() < 0.3, // 30% chance of needing medical care
-          lastFed: null,
-          lastWalked: null,
-          lastGroomed: null,
+          lastFeed: null,
+          lastWalk: null,
+          lastGroom: null,
           adoptionFee: Math.floor(Math.random() * 100) + 100, // $100-200
           daysInShelter: 0,
           status: 'needs_care',

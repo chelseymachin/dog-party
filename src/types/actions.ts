@@ -4,9 +4,9 @@ export type ActionType =
   | 'play' 
   | 'medical' 
   | 'exercise' 
-  | 'grooming'
-  | 'training'
-  | 'socialization'
+  | 'groom'
+  | 'train'
+  | 'socialize'
   | 'idle';
 
 export interface ActionCost {
@@ -146,8 +146,8 @@ export const ACTION_DEFINITIONS: Record<ActionType, {
     }
   },
   
-  grooming: {
-    name: 'Grooming',
+  groom: {
+    name: 'Groom',
     description: 'Clean and groom the animal for adoption readiness',
     icon: '✂️',
     baseCost: {
@@ -163,8 +163,8 @@ export const ACTION_DEFINITIONS: Record<ActionType, {
     }
   },
   
-  training: {
-    name: 'Training',
+  train: {
+    name: 'Train',
     description: 'Teach basic commands and improve behavior',
     icon: '🎯',
     baseCost: {
@@ -182,8 +182,8 @@ export const ACTION_DEFINITIONS: Record<ActionType, {
     }
   },
   
-  socialization: {
-    name: 'Socialization',
+  socialize: {
+    name: 'Socialize',
     description: 'Help the animal interact with others',
     icon: '👥',
     baseCost: {

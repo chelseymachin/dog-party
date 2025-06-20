@@ -43,9 +43,9 @@ export interface Animal {
   
   // Care tracking
   needsMedical: boolean;
-  lastFed: Date | null;
-  lastWalked: Date | null;
-  lastGroomed: Date | null;
+  lastFeed: Date | null;
+  lastWalk: Date | null;
+  lastGroom: Date | null;
   
   // Adoption info
   adoptionFee: number;
@@ -103,9 +103,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'barking',
         'medical': 'sleeping',
         'exercise': 'standing',
-        'grooming': 'standing',
-        'training': 'standing',
-        'socialization': 'standing'
+        'groom': 'standing',
+        'train': 'standing',
+        'socialize': 'standing'
       },
       animations: {
         standing: { duration: 600, loop: true, frames: generateFramePaths('standing', 3) },
@@ -135,9 +135,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'barking',
         'medical': 'sleeping',
         'exercise': 'standing',
-        'grooming': 'standing',
-        'training': 'standing',
-        'socialization': 'standing'
+        'groom': 'standing',
+        'train': 'standing',
+        'socialize': 'standing'
       },
       animations: {
         standing: { duration: 800, loop: true, frames: generateFramePaths('standing', 4) },
@@ -167,9 +167,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'bark',
         'medical': 'hurt',
         'exercise': 'idle',
-        'grooming': 'idle',
-        'training': 'idle',
-        'socialization': 'idle'
+        'groom': 'idle',
+        'train': 'idle',
+        'socialize': 'idle'
       },
       animations: {
         idle: { duration: 800, loop: true, frames: generateFramePaths('idle', 4) },
@@ -199,9 +199,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'bark',
         'medical': 'hurt',
         'exercise': 'idle',
-        'grooming': 'idle',
-        'training': 'idle',
-        'socialization': 'idle'
+        'groom': 'idle',
+        'train': 'idle',
+        'socialize': 'idle'
       },
       animations: {
         idle: { duration: 800, loop: true, frames: generateFramePaths('idle', 4) },
@@ -231,9 +231,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'bark',
         'medical': 'hurt',
         'exercise': 'idle',
-        'grooming': 'idle',
-        'training': 'idle',
-        'socialization': 'idle'
+        'groom': 'idle',
+        'train': 'idle',
+        'socialize': 'idle'
       },
       animations: {
         idle: { duration: 800, loop: true, frames: generateFramePaths('idle', 4) },
@@ -263,9 +263,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'barking',
         'medical': 'sleeping',
         'exercise': 'standing',
-        'grooming': 'standing',
-        'training': 'standing',
-        'socialization': 'standing'
+        'groom': 'standing',
+        'train': 'standing',
+        'socialize': 'standing'
       },
       animations: {
         standing: { duration: 1800, loop: true, frames: generateFramePaths('standing', 9) },
@@ -295,9 +295,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'barking',
         'medical': 'sleeping',
         'exercise': 'standing',
-        'grooming': 'standing',
-        'training': 'standing',
-        'socialization': 'standing'
+        'groom': 'standing',
+        'train': 'standing',
+        'socialize': 'standing'
       },
       animations: {
         standing: { duration: 1000, loop: true, frames: generateFramePaths('standing', 5) },
@@ -327,9 +327,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'barking',
         'medical': 'sleeping',
         'exercise': 'standing',
-        'grooming': 'standing',
-        'training': 'standing',
-        'socialization': 'standing'
+        'groom': 'standing',
+        'train': 'standing',
+        'socialize': 'standing'
       },
       animations: {
         standing: { duration: 1000, loop: true, frames: generateFramePaths('standing', 5) },
@@ -359,9 +359,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'barking',
         'medical': 'sleeping',
         'exercise': 'standing',
-        'grooming': 'standing',
-        'training': 'standing',
-        'socialization': 'standing'
+        'groom': 'standing',
+        'train': 'standing',
+        'socialize': 'standing'
       },
       animations: {
         standing: { duration: 800, loop: true, frames: generateFramePaths('standing', 4) },
@@ -391,9 +391,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'barking',
         'medical': 'sleeping',
         'exercise': 'standing',
-        'grooming': 'standing',
-        'training': 'standing',
-        'socialization': 'standing'
+        'groom': 'standing',
+        'train': 'standing',
+        'socialize': 'standing'
       },
       animations: {
         standing: { duration: 800, loop: true, frames: generateFramePaths('standing', 4) },
@@ -423,9 +423,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'barking',
         'medical': 'sleeping',
         'exercise': 'standing',
-        'grooming': 'standing',
-        'training': 'standing',
-        'socialization': 'standing'
+        'groom': 'standing',
+        'train': 'standing',
+        'socialize': 'standing'
       },
       animations: {
         standing: { duration: 1000, loop: true, frames: generateFramePaths('standing', 5) },
@@ -455,9 +455,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'bark',
         'medical': 'hurt',
         'exercise': 'idle',
-        'grooming': 'idle',
-        'training': 'idle',
-        'socialization': 'idle'
+        'groom': 'idle',
+        'train': 'idle',
+        'socialize': 'idle'
       },
       animations: {
         idle: { duration: 800, loop: true, frames: generateFramePaths('idle', 4) },
@@ -487,9 +487,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'barking',
         'medical': 'sleeping',
         'exercise': 'standing',
-        'grooming': 'standing',
-        'training': 'standing',
-        'socialization': 'standing'
+        'groom': 'standing',
+        'train': 'standing',
+        'socialize': 'standing'
       },
       animations: {
         standing: { duration: 800, loop: true, frames: generateFramePaths('standing', 4) },
@@ -519,9 +519,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'bark',
         'medical': 'hurt',
         'exercise': 'idle',
-        'grooming': 'idle',
-        'training': 'idle',
-        'socialization': 'idle'
+        'groom': 'idle',
+        'train': 'idle',
+        'socialize': 'idle'
       },
       animations: {
         idle: { duration: 800, loop: true, frames: generateFramePaths('idle', 4) },
@@ -551,9 +551,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'bark',
         'medical': 'hurt',
         'exercise': 'idle',
-        'grooming': 'idle',
-        'training': 'idle',
-        'socialization': 'idle'
+        'groom': 'idle',
+        'train': 'idle',
+        'socialize': 'idle'
       },
       animations: {
         idle: { duration: 800, loop: true, frames: generateFramePaths('idle', 4) },
@@ -583,9 +583,9 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
         'play': 'barking',
         'medical': 'sleeping',
         'exercise': 'standing',
-        'grooming': 'standing',
-        'training': 'standing',
-        'socialization': 'standing'
+        'groom': 'standing',
+        'train': 'standing',
+        'socialize': 'standing'
       },
       animations: {
         standing: { duration: 600, loop: true, frames: generateFramePaths('standing', 3) },

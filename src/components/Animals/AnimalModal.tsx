@@ -141,7 +141,7 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
                 onAnimationComplete={handleAnimationComplete}
               />
               
-              <div>
+              <div style={{ alignSelf: 'flex-start', width: '100%' }}>
                 <Group gap="xs" mb={4}>
                   <Text size="xl" fw={700} c="pink.8">
                     {animal.name}
@@ -154,11 +154,11 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
                     </Tooltip>
                   )}
                 </Group>
-                
-                <Text size="md" c="gray.7" mb="xs">
+              
+                <Text size="md" c="gray.7" mb="xs" ta="left">
                   {animal.breed} • {animal.age} • {animal.size}
                 </Text>
-                
+              
                 <Group gap="xs">
                   <Badge color={getStatusColor()} variant="light" size="md">
                     {getStatusLabel()}
@@ -262,13 +262,13 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
             />
             <ActionButton
               animalId={animal.id}
-              action="grooming"
+              action="groom"
               size="sm"
               fullWidth
             />
             <ActionButton
               animalId={animal.id}
-              action="training"
+              action="train"
               size="sm"
               fullWidth
             />
@@ -285,7 +285,7 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
             />
             <ActionButton
               animalId={animal.id}
-              action="socialization"
+              action="socialize"
               size="sm"
               fullWidth
             />
@@ -395,15 +395,15 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
             <SimpleGrid cols={1} spacing="xs">
               <Group justify="space-between">
                 <Text size="sm" c="gray.6">Last Fed:</Text>
-                <Text size="sm" fw={500}>{formatDate(animal.lastFed)}</Text>
+                <Text size="sm" fw={500}>{formatDate(animal.lastFeed)}</Text>
               </Group>
               <Group justify="space-between">
                 <Text size="sm" c="gray.6">Last Walked:</Text>
-                <Text size="sm" fw={500}>{formatDate(animal.lastWalked)}</Text>
+                <Text size="sm" fw={500}>{formatDate(animal.lastWalk)}</Text>
               </Group>
               <Group justify="space-between">
                 <Text size="sm" c="gray.6">Last Groomed:</Text>
-                <Text size="sm" fw={500}>{formatDate(animal.lastGroomed)}</Text>
+                <Text size="sm" fw={500}>{formatDate(animal.lastGroom)}</Text>
               </Group>
             </SimpleGrid>
           </Collapse>

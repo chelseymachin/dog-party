@@ -157,7 +157,7 @@ export const usePlayerStore = create<PlayerStore>()(
             discount = Math.floor(player.skills.exerciseTraining / 3);
             break;
           case 'play':
-          case 'socialization':
+          case 'socialize':
             discount = Math.floor(player.skills.animalPsychology / 4);
             break;
           default:
