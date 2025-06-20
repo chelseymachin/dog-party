@@ -2,7 +2,7 @@
 
 import '@mantine/core/styles.css';
 import './App.css';
-import { MantineProvider, createTheme, Text, Paper, Stack } from '@mantine/core';
+import { MantineProvider, createTheme, Text, Paper } from '@mantine/core';
 import Dashboard from './components/Game/Dashboard';
 import { useUIStore } from '@/stores';
 import MainLayout from './components/Layout/MainLayout';
