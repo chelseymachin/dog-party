@@ -19,7 +19,7 @@ interface AnimalStore {
   addAnimal: (animal: Omit<Animal, 'id'>) => Animal;
   removeAnimal: (animalId: string) => void;
   getAnimal: (animalId: string) => Animal | undefined;
-  updateAnimal: (animalId: string, updates: Partial<Animal>) => void;
+  updateAnimal: (animalId: string, updates: Partial<Animal>, updateStatus: boolean) => void;
   
   // Animal actions
   performAction: (animalId: string, action: ActionType, playerEnergyUsed: number) => ActionResult;
@@ -81,15 +81,17 @@ export const useAnimalStore = create<AnimalStore>()(
         return get().animals.find(animal => animal.id === animalId);
       },
       
-      updateAnimal: (animalId: string, updates: Partial<Animal>) => {
+      updateAnimal: (animalId: string, updates: Partial<Animal>, updateStatus: boolean = true) => {
         set((state) => ({
           animals: state.animals.map(animal =>
             animal.id === animalId ? { ...animal, ...updates } : animal
           )
         }), false, 'updateAnimal');
         
-        // Update status after any change
-        get().updateAnimalStatus(animalId);
+        // Only update status if explicitly requested 
+        if (updateStatus) {
+          get().updateAnimalStatus(animalId);
+        }
       },
       
       performAction: (animalId: string, action: ActionType, playerEnergyUsed: number) => {
@@ -124,6 +126,7 @@ export const useAnimalStore = create<AnimalStore>()(
         
         // Use animal energy
         const energyUsed = get().useAnimalEnergy(animalId, animalEnergyCost);
+
         if (!energyUsed && animalEnergyCost > 0) {
           return {
             success: false,
@@ -144,6 +147,7 @@ export const useAnimalStore = create<AnimalStore>()(
         // Apply critical success chance
         const criticalSuccess = Math.random() < (effects.criticalSuccessChance || 0);
         const multiplier = criticalSuccess ? 1.5 : 1;
+
         
         get().updateAnimal(animalId, {
           health: Math.min(100, Math.max(0, animal.health + (healthChange * multiplier))),
@@ -151,7 +155,8 @@ export const useAnimalStore = create<AnimalStore>()(
           adoptionReadiness: Math.min(100, Math.max(0, animal.adoptionReadiness + (adoptionChange * multiplier))),
           energySpentToday: animal.energySpentToday + animalEnergyCost,
           [`last${action.charAt(0).toUpperCase() + action.slice(1)}`]: new Date(),
-        });
+        }, true);
+
         
         // Special effects
         if (effects.curesSickness) {
@@ -196,14 +201,16 @@ export const useAnimalStore = create<AnimalStore>()(
       
       useAnimalEnergy: (animalId: string, amount: number) => {
         const animal = get().getAnimal(animalId);
+      
         if (!animal || animal.energy < amount) {
           return false;
         }
         
+        // Don't trigger status update for simple energy changes
         get().updateAnimal(animalId, {
           energy: animal.energy - amount,
           energySpentToday: animal.energySpentToday + amount,
-        });
+        }, false); // <- Pass false to prevent status update
         
         return true;
       },
@@ -214,7 +221,7 @@ export const useAnimalStore = create<AnimalStore>()(
         
         get().updateAnimal(animalId, {
           energy: Math.min(animal.maxEnergy, animal.energy + amount),
-        });
+        }, true);
       },
       
       resetAllAnimalEnergy: () => {
@@ -246,7 +253,10 @@ export const useAnimalStore = create<AnimalStore>()(
           newStatus = 'needs_care';
         }
         
-        get().updateAnimal(animalId, { status: newStatus });
+        // Only update if status actually changed and don't trigger another status update
+        if (newStatus !== animal.status) {
+          get().updateAnimal(animalId, { status: newStatus }, false); // <- Pass false here too
+        }
       },
       
       checkForSickness: (animalId: string) => {
@@ -255,13 +265,13 @@ export const useAnimalStore = create<AnimalStore>()(
         
         // Random chance for sickness based on health and care
         const sicknessChance = Math.max(0, (100 - animal.health) / 1000);
-        const getsick = Math.random() < sicknessChance;
+        const getSick = Math.random() < sicknessChance;
         
-        if (getsick) {
+        if (getSick) {
           get().updateAnimal(animalId, {
             needsMedical: true,
             health: Math.max(10, animal.health - 20),
-          });
+          }, true);
           return true;
         }
         
@@ -271,7 +281,7 @@ export const useAnimalStore = create<AnimalStore>()(
       healAnimal: (animalId: string) => {
         get().updateAnimal(animalId, {
           needsMedical: false,
-        });
+        }, true);
       },
       
       getAdoptableAnimals: () => {

@@ -60,6 +60,7 @@ export const useGameActions = () => {
       
       // Get actual action cost from definitions
       const actionDef = ACTION_DEFINITIONS[actionType];
+
       if (!actionDef) {
         uiStore.addQuickNotification('error', 'Invalid Action', 'Unknown action type');
         return false;
@@ -92,7 +93,7 @@ export const useGameActions = () => {
         
         // Perform the action
         const result = animalStore.performAction(animalId, actionType, actionCost);
-        
+
         if (result.success) {
           // Grant experience
           const expResult = playerStore.gainExperience(result.experienceGained);
