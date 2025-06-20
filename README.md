@@ -1,54 +1,78 @@
-# React + TypeScript + Vite
+# **[🐾 Dog Party: Animal Shelter Simulator](https://main.d2q53wm3iph1fo.amplifyapp.com/)**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> *A silly lil game about caring for animals and helping them find their forever homes!* 💕
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Welcome to  **Dog Party** - a cozy browser based game where you run your own animal shelter! Take care of dogs, watch them grow happier, and help them get adopted when they're ready.
 
-## Expanding the ESLint configuration
+### ✨ **Current Features**
+- 🐕 **16 Dog Breeds** 
+- 🎮 **Smooth Sprite Animations** 
+- 💖 **Care System** - Feed, walk, play, groom, train, and socialize
+- 📊 **Detailed Stats** - Track health, happiness, and adoption readiness
+- 🏆 **Daily Goals**
+- 🎯 **Action System** 
+- 🌟 **Achievement System** 
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 🗺️ **Roadmap - Coming Soon!**
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 🎯 **Phase 1 - Core Gameplay**
+- [ ] 🛒 **Shop System** - Buy supplies, toys, and upgrades
+- [ ] 💰 **Economic Balance** - Manage shelter budget and expenses
+- [ ] 🏥 **Medical System** - Handle sick animals and treatments
+- [ ] 📈 **Progression System** - Unlock new breeds and features
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 🎯 **Phase 2 - Advanced Features**
+- [ ] 🐱 **Cat Support** - Expand beyond dogs to include cats
+- [ ] 🎨 **Shelter Customization** - Decorate and upgrade your facility
+- [ ] 👥 **Staff Management** - Hire helpers and volunteers
+- [ ] 📊 **Advanced Analytics** - Detailed shelter performance metrics
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+### 🎯 **Phase 3 - Community & Polish**
+- [ ] 💾 **Save/Load System** - Persistent game progress
+- [ ] 🎵 **Sound & Music** - Ambient shelter sounds and music
+- [ ] 🏅 **Achievement Gallery** - Show off your accomplishments
+- [ ] 📖 **Tutorial System** - Better onboarding for new players
+- [ ] 🌐 **Leaderboards** - Compare with other shelter managers
+
+---
+
+## 🛠️ **Tech Stack**
+
+### **Frontend Framework**
+- ⚛️ **React 18** 
+- 📘 **TypeScript** 
+- ⚡ **Vite**
+- 🐻 **Zustand** 
+
+### **UI & Styling**
+- 🎨 **Mantine UI** 
+- 🌈 **Tailwind CSS**
+- 📱 **Lucide Icons** 
+
+---
+
+## **Art Credits**
+
+All the adorable doggo sprites were purchased from the artist below:
+
+### **[Girly Pixels](https://girlypixels.itch.io/)** 💖
+
+---
+
+## 💝 **Contributing**
+
+We'd love your help making this shelter even better! Whether it's:
+- 🐛 **Bug reports** - Help us squash those pesky issues
+- 💡 **Feature ideas** - What would make the shelter more fun?
+- 🎨 **UI improvements** - Make it even more adorable
+- 📝 **Documentation** - Help others understand the code
+
+---
+
+*Made with 💖*
+
+**Remember**: *Every pixel pup deserves a home!* 🏡✨
