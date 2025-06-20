@@ -1,5 +1,3 @@
-// src/stores/gameStore.ts
-
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { 
@@ -7,6 +5,7 @@ import type {
   GameSettings 
 } from '@/types';
 import { createInitialGameState } from '@/types/game';
+import { useAnimalStore } from './animalStore';
 
 interface GameStore extends GameState {
   // Actions
@@ -55,8 +54,8 @@ export const useGameStore = create<GameStore>()(
       },
       
       updateShelterStats: () => {
-        const state = get();
-        const animals = state.animals;
+        const animalStore = useAnimalStore.getState();
+        const animals = animalStore.animals;
         
         if (animals.length === 0) {
           set((state) => ({
@@ -126,8 +125,9 @@ export const useGameStore = create<GameStore>()(
       },
       
       getShelterOccupancy: () => {
-        const { animals, shelterCapacity } = get();
-        const current = animals.length;
+        const { shelterCapacity } = get();
+        const animalStore = useAnimalStore.getState();
+        const current = animalStore.animals.length;
         return {
           current,
           max: shelterCapacity,
@@ -136,13 +136,15 @@ export const useGameStore = create<GameStore>()(
       },
       
       calculateOverallHealth: () => {
-        const { animals } = get();
+        const animalStore = useAnimalStore.getState();
+        const animals = animalStore.animals;
         if (animals.length === 0) return 0;
         return Math.round(animals.reduce((sum, animal) => sum + animal.health, 0) / animals.length);
       },
       
       calculateOverallHappiness: () => {
-        const { animals } = get();
+        const animalStore = useAnimalStore.getState();
+        const animals = animalStore.animals;
         if (animals.length === 0) return 0;
         return Math.round(animals.reduce((sum, animal) => sum + animal.happiness, 0) / animals.length);
       },

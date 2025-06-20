@@ -58,6 +58,7 @@ interface DayStore {
   // Day management
   startNewDay: () => void;
   endDay: () => DayEndSummary;
+  initializeFirstDay: () => void;
   canEndDay: () => boolean;
   
   // Goal management
@@ -230,6 +231,39 @@ export const useDayStore = create<DayStore>()(
       canEndDay: () => {
         // Can always end day, but maybe warn if goals aren't complete
         return true;
+      },
+
+      initializeFirstDay: () => {
+        const newGoals = get().generateDailyGoals();
+        
+        set({
+          currentDay: 1,  // Keep it at 1 for the first day
+          isNightTime: false,
+          dayStartTime: new Date(),
+          currentDayGoals: newGoals,
+          completedGoals: [],
+          actionsPerformedToday: 0,
+          actionBreakdown: {
+            feed: 0,
+            walk: 0,
+            play: 0,
+            medical: 0,
+            exercise: 0,
+            grooming: 0,
+            training: 0,
+            socialization: 0,
+          },
+          animalsHelpedToday: new Set(),
+          moneyEarnedToday: 0,
+          moneySpentToday: 0,
+          activeEvents: [],
+        }, false, 'initializeFirstDay');
+        
+        // Trigger potential random event
+        const randomEvent = get().triggerRandomEvent();
+        if (randomEvent) {
+          get().addEvent(randomEvent);
+        }
       },
       
       generateDailyGoals: () => {

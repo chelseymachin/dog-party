@@ -43,7 +43,7 @@ export const useGameActions = () => {
       animalStore.addAnimal(firstAnimal);
       
       // Start the first day
-      dayStore.startNewDay();
+      dayStore.initializeFirstDay();
       
       // Set up UI
       uiStore.setCurrentView('dashboard');

@@ -27,7 +27,6 @@ const Dashboard: React.FC = () => {
   const adoptableAnimals = animalStore.getAdoptableAnimals();
   
   const dayStore = useDayStore();
-  const currentDay = dayStore.currentDay;
   const dayStats = dayStore.getDayStats();
 
   const isLargeScreen = useMediaQuery('(min-width: 1024px)');
@@ -59,9 +58,6 @@ const Dashboard: React.FC = () => {
               <Title order={2} c="pink.7" mb={4}>
                 🌅 Good Morning, Shelter Manager!
               </Title>
-              <Text c="gray.6" size="lg">
-                Day {currentDay} • {animals.length} animal{animals.length !== 1 ? 's' : ''} in your care
-              </Text>
             </Box>
             
             {/* Urgent Alerts */}
