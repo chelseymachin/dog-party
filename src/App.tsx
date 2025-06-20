@@ -1,5 +1,6 @@
 import '@mantine/core/styles.css';
 import './App.css';
+import './index.css'; 
 import { MantineProvider, createTheme, Text, Paper } from '@mantine/core';
 import Dashboard from './components/Game/Dashboard';
 import { useUIStore } from '@/stores';
