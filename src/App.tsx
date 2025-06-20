@@ -3,6 +3,7 @@
 import '@mantine/core/styles.css';
 import './App.css';
 import { MantineProvider, createTheme, Text, Paper, Stack } from '@mantine/core';
+import Dashboard from './components/Game/Dashboard';
 import { useUIStore } from '@/stores';
 import MainLayout from './components/Layout/MainLayout';
 
@@ -42,53 +43,13 @@ const theme = createTheme({
 });
 
 // Simple placeholder component for testing
-const TestDashboard = () => {
-  return (
-    <Stack gap="lg">
-      <Paper p="xl" radius="md" bg="pink.0" style={{ border: '1px solid var(--mantine-color-pink-2)' }}>
-        <Text size="xl" fw={600} c="pink.7" ta="center" mb="md">
-          🎉 Welcome to Dog Party: Shelter Simulator!
-        </Text>
-        <Text ta="center" c="gray.6">
-          Your layout components are working! The game is initializing...
-        </Text>
-      </Paper>
-      
-      <Paper p="md" radius="md" bg="blue.0" style={{ border: '1px solid var(--mantine-color-blue-2)' }}>
-        <Text fw={600} c="blue.7" mb="xs">
-          🧪 Testing Features:
-        </Text>
-        <Stack gap="xs">
-          <Text size="sm" c="blue.6">✅ Header with day counter and budget</Text>
-          <Text size="sm" c="blue.6">✅ Navigation sidebar with goals</Text>
-          <Text size="sm" c="blue.6">✅ Responsive design (try resizing window)</Text>
-          <Text size="sm" c="blue.6">✅ Pink theme and custom colors</Text>
-          <Text size="sm" c="blue.6">✅ Lucide icons integration</Text>
-        </Stack>
-      </Paper>
-      
-      <Paper p="md" radius="md" bg="yellow.0" style={{ border: '1px solid var(--mantine-color-yellow-3)' }}>
-        <Text fw={600} c="yellow.8" mb="xs">
-          🚧 Coming Next:
-        </Text>
-        <Stack gap="xs">
-          <Text size="sm" c="yellow.7">🐕 Animal cards and care system</Text>
-          <Text size="sm" c="yellow.7">⚡ Energy management panel</Text>
-          <Text size="sm" c="yellow.7">🎯 Daily goals and progression</Text>
-          <Text size="sm" c="yellow.7">🛒 Shop and inventory system</Text>
-        </Stack>
-      </Paper>
-    </Stack>
-  );
-};
-
 const App: React.FC = () => {
   const currentView = useUIStore(state => state.currentView);
   
   const renderCurrentView = () => {
     switch (currentView) {
       case 'dashboard':
-        return <TestDashboard />;
+        return <Dashboard />;
       case 'shop':
         return (
           <Paper p="xl" radius="md" ta="center">
@@ -118,7 +79,7 @@ const App: React.FC = () => {
           </Paper>
         );
       default:
-        return <TestDashboard />;
+        return <Dashboard />;
     }
   };
   

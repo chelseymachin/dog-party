@@ -1,5 +1,5 @@
 import React from 'react';
-import { SimpleGrid, Text, Stack } from '@mantine/core';
+import { Box, Text, Stack } from '@mantine/core';
 import { type Animal } from '@/types';
 import AnimalCard from './AnimalCard';
 
@@ -22,15 +22,18 @@ const AnimalGrid: React.FC<AnimalGridProps> = ({ animals }) => {
   }
 
   return (
-    <SimpleGrid 
-      cols={{ base: 1, sm: 2, lg: 2, xl: 3 }} 
-      spacing="lg"
-      verticalSpacing="lg"
+    <Box
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+        gap: 'var(--mantine-spacing-lg)',
+        width: '100%',
+      }}
     >
       {animals.map(animal => (
         <AnimalCard key={animal.id} animal={animal} />
       ))}
-    </SimpleGrid>
+    </Box>
   );
 };
 

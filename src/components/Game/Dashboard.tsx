@@ -15,22 +15,29 @@ import { useAnimalStore, useDayStore, useGameStore, usePlayerStore } from '@/sto
 import EnergyPanel from './EnergyPanel';
 import AnimalGrid from '../Animals/AnimalGrid';
 import GoalsPanel from '../Day/GoalsPanel';
+import { useMediaQuery } from '@mantine/hooks';
 
 const Dashboard: React.FC = () => {
   // Get all the data we need for the dashboard
   const animals = useAnimalStore(state => state.animals);
   const animalStore = useAnimalStore();
+  
+  // Call store functions properly (not in selectors)
   const animalsNeedingCare = animalStore.getAnimalsNeedingCare();
   const adoptableAnimals = animalStore.getAdoptableAnimals();
   
-  const { currentDay, getDayStats } = useDayStore();
-  const shelterOccupancy = useGameStore(state => state.getShelterOccupancy());
-  const { calculateOverallHealth, calculateOverallHappiness } = useGameStore();
-  const playerEnergy = usePlayerStore(state => state.player.energy);
+  const dayStore = useDayStore();
+  const currentDay = dayStore.currentDay;
+  const dayStats = dayStore.getDayStats();
+
+  const isLargeScreen = useMediaQuery('(min-width: 1024px)');
   
-  const dayStats = getDayStats();
-  const overallHealth = calculateOverallHealth();
-  const overallHappiness = calculateOverallHappiness();
+  const gameStore = useGameStore();
+  const shelterOccupancy = gameStore.getShelterOccupancy();
+  const overallHealth = gameStore.calculateOverallHealth();
+  const overallHappiness = gameStore.calculateOverallHappiness();
+  
+  const playerEnergy = usePlayerStore(state => state.player.energy);
   
   // Determine alerts and urgency
   const hasUrgentCare = animalsNeedingCare.length > 0;
@@ -175,7 +182,7 @@ const Dashboard: React.FC = () => {
         {/* Main Content - Animals + Sidebar */}
         <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="lg">
           {/* Animals Section - Takes up 2 columns on large screens */}
-          <Box style={{ gridColumn: { base: 'span 1', lg: 'span 2' } }}>
+          <Box style={{ gridColumn: isLargeScreen ? 'span 2' : 'span 1' }}>
             <Group justify="space-between" align="center" mb="md">
               <Title order={3} c="gray.8">
                 🐾 Your Animals
