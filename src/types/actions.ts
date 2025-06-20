@@ -63,11 +63,12 @@ export const ACTION_DEFINITIONS: Record<ActionType, {
 }> = {
   feed: {
     name: 'Feed',
-    description: 'Give the animal food to restore health',
+    description: 'Give the animal food to restore health (costs $5 unless you have food supplies)',
     icon: '🍖',
     baseCost: {
       playerEnergy: 1,
       animalEnergy: 0,
+      moneyRequired: 5, // Default cost if no food supplies
     },
     baseEffect: {
       health: 10,

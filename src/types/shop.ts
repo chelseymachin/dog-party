@@ -103,52 +103,51 @@ export interface Purchase {
 
 // Predefined shop items
 export const SHOP_ITEMS: ShopItem[] = [
-  // Basic Supplies
+  // === BASIC SUPPLIES ===
   {
     id: 'basic_food',
     name: 'Basic Dog Food',
-    description: 'Standard nutrition for daily feeding',
+    description: 'Standard nutrition for daily feeding - reduces feed cost to $0',
     icon: '🍖',
     category: 'supplies',
     rarity: 'common',
-    basePrice: 25,
-    currentPrice: 25,
+    basePrice: 50,
+    currentPrice: 50,
     consumable: true,
+    maxQuantity: 10,
     alwaysAvailable: true,
     effects: {
-      // Used when feeding animals
+      // This will be used to offset feeding costs
     }
   },
   
   {
-    id: 'premium_food',
-    name: 'Premium Dog Food',
-    description: 'High-quality nutrition that boosts health significantly',
-    icon: '🥩',
+    id: 'premium_treats',
+    name: 'Premium Treats',
+    description: 'Delicious treats that boost animal energy by 2 points',
+    icon: '🦴',
     category: 'supplies',
     rarity: 'uncommon',
-    basePrice: 75,
-    currentPrice: 75,
+    basePrice: 40,
+    currentPrice: 40,
     consumable: true,
+    maxQuantity: 8,
     alwaysAvailable: true,
     effects: {
-      improveActionEffect: [{
-        action: 'feed',
-        multiplier: 1.5
-      }]
+      restoreAnimalEnergy: 2
     }
   },
-  
-  // Energy Items
+
+  // === ENERGY ITEMS ===
   {
     id: 'energy_drink',
     name: 'Energy Drink',
-    description: 'Restore 3 energy points during the day',
+    description: 'Restore 3 player energy points instantly',
     icon: '⚡',
     category: 'energy',
     rarity: 'common',
-    basePrice: 25,
-    currentPrice: 25,
+    basePrice: 30,
+    currentPrice: 30,
     consumable: true,
     maxQuantity: 5,
     alwaysAvailable: true,
@@ -158,14 +157,32 @@ export const SHOP_ITEMS: ShopItem[] = [
   },
   
   {
+    id: 'super_energy_drink',
+    name: 'Super Energy Drink',
+    description: 'Restore 5 player energy points instantly',
+    icon: '🔋',
+    category: 'energy',
+    rarity: 'rare',
+    basePrice: 80,
+    currentPrice: 80,
+    consumable: true,
+    maxQuantity: 3,
+    requiresLevel: 3,
+    alwaysAvailable: true,
+    effects: {
+      restorePlayerEnergy: 5
+    }
+  },
+
+  {
     id: 'coffee_machine',
     name: 'Coffee Machine',
     description: 'Start each day with +2 bonus energy',
     icon: '☕',
     category: 'equipment',
     rarity: 'uncommon',
-    basePrice: 150,
-    currentPrice: 150,
+    basePrice: 200,
+    currentPrice: 200,
     consumable: false,
     maxQuantity: 1,
     alwaysAvailable: true,
@@ -173,17 +190,80 @@ export const SHOP_ITEMS: ShopItem[] = [
       dailyEnergyBonus: 2
     }
   },
-  
-  // Automation
+
+  // === EFFICIENCY UPGRADES ===
+  {
+    id: 'comfy_leash',
+    name: 'Comfortable Leash',
+    description: 'Makes walking more efficient - reduces walk energy cost by 1',
+    icon: '🦮',
+    category: 'equipment',
+    rarity: 'common',
+    basePrice: 75,
+    currentPrice: 75,
+    consumable: false,
+    maxQuantity: 1,
+    alwaysAvailable: true,
+    effects: {
+      reduceActionCost: [{
+        action: 'walk',
+        reduction: 1
+      }]
+    }
+  },
+
+  {
+    id: 'grooming_kit',
+    name: 'Professional Grooming Kit',
+    description: 'Increases grooming effectiveness by 50%',
+    icon: '✂️',
+    category: 'equipment',
+    rarity: 'uncommon',
+    basePrice: 120,
+    currentPrice: 120,
+    consumable: false,
+    maxQuantity: 1,
+    requiresLevel: 2,
+    alwaysAvailable: true,
+    effects: {
+      improveActionEffect: [{
+        action: 'groom',
+        multiplier: 1.5
+      }]
+    }
+  },
+
+  {
+    id: 'training_treats',
+    name: 'Training Treats',
+    description: 'Makes training sessions 30% more effective',
+    icon: '🎯',
+    category: 'supplies',
+    rarity: 'uncommon',
+    basePrice: 60,
+    currentPrice: 60,
+    consumable: true,
+    maxQuantity: 6,
+    requiresLevel: 2,
+    alwaysAvailable: true,
+    effects: {
+      improveActionEffect: [{
+        action: 'train',
+        multiplier: 1.3
+      }]
+    }
+  },
+
+  // === AUTOMATION ===
   {
     id: 'auto_feeder',
     name: 'Automatic Feeder',
-    description: 'Automatically feeds animals without using your energy',
+    description: 'Automatically feeds one animal per day without using energy',
     icon: '🤖',
     category: 'automation',
     rarity: 'rare',
-    basePrice: 200,
-    currentPrice: 200,
+    basePrice: 400,
+    currentPrice: 400,
     consumable: false,
     maxQuantity: 1,
     requiresLevel: 5,
@@ -193,108 +273,45 @@ export const SHOP_ITEMS: ShopItem[] = [
       autoFeeding: true,
       reduceActionCost: [{
         action: 'feed',
-        reduction: 1 // Feeding costs 0 energy instead of 1
-      }]
-    }
-  },
-  
-  // Equipment
-  {
-    id: 'exercise_equipment',
-    name: 'Exercise Equipment',
-    description: 'Professional equipment that makes exercise more efficient',
-    icon: '🏃‍♂️',
-    category: 'equipment',
-    rarity: 'rare',
-    basePrice: 300,
-    currentPrice: 300,
-    consumable: false,
-    maxQuantity: 1,
-    requiresLevel: 8,
-    alwaysAvailable: false,
-    unlockDay: 10,
-    effects: {
-      reduceActionCost: [{
-        action: 'exercise',
         reduction: 1
-      }],
-      improveActionEffect: [{
-        action: 'exercise',
-        multiplier: 1.3
       }]
     }
   },
-  
-  // Comfort Items
+
+  // === COMFORT & PASSIVE BENEFITS ===
   {
     id: 'comfort_beds',
     name: 'Comfort Beds',
-    description: 'Luxury beds that help animals recover energy faster',
+    description: 'Animals recover +1 energy per day passively',
     icon: '🛏️',
     category: 'comfort',
     rarity: 'uncommon',
-    basePrice: 120,
-    currentPrice: 120,
-    consumable: false,
-    maxQuantity: 3,
-    alwaysAvailable: true,
-    effects: {
-      increaseMaxAnimalEnergy: 1,
-      passiveHappiness: 2
-    }
-  },
-  
-  // Shelter Upgrades
-  {
-    id: 'kennel_expansion',
-    name: 'Kennel Expansion',
-    description: 'Add capacity for one additional animal',
-    icon: '🏠',
-    category: 'equipment',
-    rarity: 'epic',
-    basePrice: 500,
-    currentPrice: 500,
-    consumable: false,
-    maxQuantity: 5,
-    alwaysAvailable: true,
-    effects: {
-      increaseShelterCapacity: 1
-    }
-  },
-  
-  // Medical
-  {
-    id: 'medical_kit',
-    name: 'Medical Kit',
-    description: 'Essential supplies for treating sick animals',
-    icon: '💉',
-    category: 'medical',
-    rarity: 'common',
-    basePrice: 50,
-    currentPrice: 50,
-    consumable: true,
-    maxQuantity: 10,
-    alwaysAvailable: true,
-    effects: {
-      // Required for medical actions
-    }
-  },
-  
-  {
-    id: 'veterinary_station',
-    name: 'Veterinary Station',
-    description: 'Professional medical equipment for advanced care',
-    icon: '🏥',
-    category: 'equipment',
-    rarity: 'epic',
-    basePrice: 750,
-    currentPrice: 750,
+    basePrice: 180,
+    currentPrice: 180,
     consumable: false,
     maxQuantity: 1,
-    requiresLevel: 10,
-    requiresReputation: 50,
-    alwaysAvailable: false,
-    unlockDay: 15,
+    requiresLevel: 3,
+    alwaysAvailable: true,
+    effects: {
+      passiveHealth: 5, // Animals gain 5 health per day
+      increaseMaxAnimalEnergy: 1 // All animals get +1 max energy
+    }
+  },
+
+  // === ADVANCED EQUIPMENT ===
+  {
+    id: 'medical_kit',
+    name: 'Advanced Medical Kit',
+    description: 'Medical care is 40% more effective and costs 1 less energy',
+    icon: '🏥',
+    category: 'medical',
+    rarity: 'rare',
+    basePrice: 250,
+    currentPrice: 250,
+    consumable: false,
+    maxQuantity: 1,
+    requiresLevel: 4,
+    alwaysAvailable: true,
     effects: {
       reduceActionCost: [{
         action: 'medical',
@@ -302,9 +319,8 @@ export const SHOP_ITEMS: ShopItem[] = [
       }],
       improveActionEffect: [{
         action: 'medical',
-        multiplier: 1.5
-      }],
-      reduceSicknessChance: 0.3
+        multiplier: 1.4
+      }]
     }
   }
 ];

@@ -9,6 +9,7 @@ export { usePlayerStore } from './playerStore';
 export { useAnimalStore } from './animalStore';
 export { useDayStore } from './dayStore';
 export { useUIStore } from './uiStore';
+export { useInventoryStore } from './inventoryStore';
 
 import { useGameStore } from './gameStore';
 import { usePlayerStore } from './playerStore';
