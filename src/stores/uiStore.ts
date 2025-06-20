@@ -85,7 +85,7 @@ export const useUIStore = create<UIStore>()(
       goBack: () => {
         const { previousView } = get();
         if (previousView) {
-          set((state) => ({
+          set(() => ({
             currentView: previousView,
             previousView: undefined,
           }), false, 'goBack');

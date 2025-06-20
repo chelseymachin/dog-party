@@ -2,17 +2,14 @@ import React from 'react';
 import { 
   Group, 
   Title, 
-  Badge, 
   ActionIcon, 
   Burger,
   Flex,
 } from '@mantine/core';
 import { Menu, Settings, HelpCircle } from 'lucide-react';
-import { useDayStore, useUIStore, useGameStore } from '@/stores';
+import { useUIStore } from '@/stores';
 
 const Header: React.FC = () => {
-  const currentDay = useDayStore(state => state.currentDay);
-  const budget = useGameStore(state => state.budget);
   const { 
     isMobile, 
     mobileSidebarCollapsed,

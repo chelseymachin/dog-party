@@ -1,5 +1,3 @@
-// src/stores/dayStore.ts
-
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { 
@@ -10,6 +8,34 @@ import {
   type ActionType,
   DAILY_GOAL_TEMPLATES
 } from '@/types';
+
+// Helper functions moved outside the store
+const getPerformanceMessage = (grade: string) => {
+  switch (grade) {
+    case 'A': return "Outstanding work! Your animals are thriving under your excellent care.";
+    case 'B': return "Great job! You're providing quality care for your animals.";
+    case 'C': return "Good effort! Your animals are getting the care they need.";
+    case 'D': return "You're helping your animals, but there's room for improvement.";
+    case 'F': return "Your animals need more attention. Try to spend more time caring for them.";
+    default: return "Keep up the good work!";
+  }
+};
+
+const calculateCareStreak = (dayHistory: DayHistory[]) => {
+  let streak = 0;
+  
+  // Count consecutive days with good performance
+  for (let i = dayHistory.length - 1; i >= 0; i--) {
+    const day = dayHistory[i];
+    if (day.animalsHelped >= 2 && day.actionsPerformed >= 6) {
+      streak++;
+    } else {
+      break;
+    }
+  }
+  
+  return streak;
+};
 
 interface DayStore {
   currentDay: number;
@@ -181,13 +207,13 @@ export const useDayStore = create<DayStore>()(
           dayCompleted: state.currentDay,
           dayHistory,
           performanceGrade,
-          performanceMessage: get().getPerformanceMessage(performanceGrade),
+          performanceMessage: getPerformanceMessage(performanceGrade), // Use helper function
           experienceGained: state.actionsPerformedToday * 2,
           levelUp: false, // This would be determined by player store
           tomorrowsGoals,
           predictedEvents: [],
           energyRestored: { player: 10, animals: {} },
-          careStreak: get().calculateCareStreak(),
+          careStreak: calculateCareStreak(state.dayHistory), // Use helper function
           adoptionStreak: 0,
           newAchievements: [],
         };
@@ -387,35 +413,6 @@ export const useDayStore = create<DayStore>()(
           totalAdoptions: lastWeek.reduce((sum, day) => sum + day.adoptions, 0),
           totalMoney: lastWeek.reduce((sum, day) => sum + day.moneyEarned - day.moneySpent, 0),
         };
-      },
-      
-      // Helper methods
-      getPerformanceMessage: (grade: string) => {
-        switch (grade) {
-          case 'A': return "Outstanding work! Your animals are thriving under your excellent care.";
-          case 'B': return "Great job! You're providing quality care for your animals.";
-          case 'C': return "Good effort! Your animals are getting the care they need.";
-          case 'D': return "You're helping your animals, but there's room for improvement.";
-          case 'F': return "Your animals need more attention. Try to spend more time caring for them.";
-          default: return "Keep up the good work!";
-        }
-      },
-      
-      calculateCareStreak: () => {
-        const state = get();
-        let streak = 0;
-        
-        // Count consecutive days with good performance
-        for (let i = state.dayHistory.length - 1; i >= 0; i--) {
-          const day = state.dayHistory[i];
-          if (day.animalsHelped >= 2 && day.actionsPerformed >= 6) {
-            streak++;
-          } else {
-            break;
-          }
-        }
-        
-        return streak;
       },
     }),
     {

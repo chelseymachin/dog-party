@@ -6,18 +6,14 @@ import {
   Divider, 
   Text, 
   Badge,
-  Group,
-  ActionIcon,
-  Title,
-  Flex
+  Group
 } from '@mantine/core';
 import { 
   Home, 
   ShoppingCart, 
   Heart, 
   BarChart3,
-  Settings,
-  X
+  Settings
 } from 'lucide-react';
 import { useUIStore, useAnimalStore, useDayStore, useGameStore } from '@/stores';
 import { type ViewMode } from '@/types';

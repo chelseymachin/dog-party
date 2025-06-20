@@ -4,7 +4,6 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { 
   GameState, 
-  ShelterStats,
   GameSettings 
 } from '@/types';
 import { createInitialGameState } from '@/types/game';
