@@ -58,8 +58,8 @@ const MobileSidebar: React.FC = () => {
       icon: <ShoppingCart size={20} />,
     },
     {
-      id: 'adoptions',
-      label: 'Adoptions',
+      id: 'rescue',
+      label: 'Rescue',
       icon: <Heart size={20} />,
       badge: adoptableAnimals.length > 0 ? adoptableAnimals.length : undefined,
       color: 'green',

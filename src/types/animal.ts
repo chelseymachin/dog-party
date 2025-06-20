@@ -3,7 +3,7 @@ import { type ActionType } from '@/types';
 export type AnimalType = 'dog';
 export type AnimalSize = 'small' | 'medium' | 'large';
 export type AnimalAge = 'puppy' | 'adult' | 'senior';
-export type AnimalStatus = 'healthy' | 'needs_care' | 'ready_for_adoption' | 'sick' | 'recovering';
+export type AnimalStatus = 'healthy' | 'needs_care' | 'ready_for_adoption' | 'sick' | 'recovering' | 'intake';
 
 export type AnimationName = 
   | 'idle' | 'barking' | 'bite' | 'dying' | 'jump' | 'running' | 'walking' 

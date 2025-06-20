@@ -1,4 +1,4 @@
-export type ViewMode = 'dashboard' | 'shop' | 'adoptions' | 'stats' | 'settings';
+export type ViewMode = 'dashboard' | 'shop' | 'rescue' | 'stats' | 'settings';
 
 export type ModalType = 
   'animal_care'
