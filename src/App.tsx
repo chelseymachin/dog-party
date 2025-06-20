@@ -3,6 +3,7 @@ import './App.css';
 import './index.css'; 
 import { MantineProvider, createTheme, Text, Paper } from '@mantine/core';
 import Dashboard from './components/Game/Dashboard';
+import Shop from './components/Game/Shop';
 import { useUIStore } from '@/stores';
 import MainLayout from './components/Layout/MainLayout';
 
@@ -50,12 +51,7 @@ const App: React.FC = () => {
       case 'dashboard':
         return <Dashboard />;
       case 'shop':
-        return (
-          <Paper p="xl" radius="md" ta="center">
-            <Text size="xl" mb="md">🛒 Shop View</Text>
-            <Text c="gray.6">Coming soon! This will be your shop interface.</Text>
-          </Paper>
-        );
+        return <Shop />;
       case 'adoptions':
         return (
           <Paper p="xl" radius="md" ta="center">

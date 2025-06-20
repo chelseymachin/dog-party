@@ -47,7 +47,7 @@ const Dashboard: React.FC = () => {
         <Paper 
           p="lg" 
           radius="md" 
-          bg="pink.0" 
+          bg="pink.1" 
           style={{ border: '1px solid var(--mantine-color-pink-2)' }}
         >
           <Group justify="space-between" align="flex-start" wrap="wrap">
