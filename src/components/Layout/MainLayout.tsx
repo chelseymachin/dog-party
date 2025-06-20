@@ -17,10 +17,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     isLoading,
     isDayTransitioning,
     isMobile, 
-    mobileSidebarCollapsed,
     navigationCollapsed,
-    toggleMobileSidebar,
-    toggleNavigation,
     setMobile,
   } = useUIStore();
   
