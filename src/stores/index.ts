@@ -302,7 +302,7 @@ export const useDebugActions = () => {
           happiness: 100,
           energy: animal.maxEnergy,
           needsMedical: false,
-        });
+        }, true);
       });
     },
     
