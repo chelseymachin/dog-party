@@ -105,7 +105,7 @@ export const createInitialUIState = (): UIState => ({
   isDayTransitioning: false,
   isActionInProgress: false,
   isMobile: window.innerWidth < 768,
-  mobileSidebarCollapsed: false,
+  mobileSidebarCollapsed: true,
   navigationCollapsed: false,
   showTutorialOverlay: true,
   animalSortBy: 'name',

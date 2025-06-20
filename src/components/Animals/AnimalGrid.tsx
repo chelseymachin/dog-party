@@ -25,9 +25,11 @@ const AnimalGrid: React.FC<AnimalGridProps> = ({ animals }) => {
     <Box
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
         gap: 'var(--mantine-spacing-lg)',
         width: '100%',
+        margin: 0,
+        padding: 0,
       }}
     >
       {animals.map(animal => (

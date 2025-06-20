@@ -42,16 +42,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     const handleResize = () => {
       const newIsMobile = window.innerWidth < 768;
       setMobile(newIsMobile);
-      
-      // When switching to mobile, close the sidebar
-      // When switching to desktop, open the sidebar
-      if (newIsMobile && !navigationCollapsed) {
-        toggleNavigation();
-      } else if (!newIsMobile && !mobileSidebarCollapsed) {
-        // On desktop, sidebar should be open by default
-        toggleMobileSidebar();
-        toggleNavigation();
-      }
     };
     
     // Set initial state
@@ -59,7 +49,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [setMobile, navigationCollapsed, mobileSidebarCollapsed, toggleMobileSidebar, toggleNavigation]);
+  }, [setMobile]); 
   
   // Set global background color
   useEffect(() => {
