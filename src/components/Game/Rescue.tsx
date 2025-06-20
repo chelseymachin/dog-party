@@ -10,9 +10,9 @@ import {
   Box,
   Button,
   Card,
-  Progress,
   Flex,
-  Center
+  Center,
+  SimpleGrid
 } from '@mantine/core';
 import { 
   Heart, 
@@ -27,7 +27,7 @@ import AnimalSprite from '@/components/Animals/AnimalSprite';
 const Rescue: React.FC = () => {
   const { getShelterOccupancy } = useGameStore();
   const { addQuickNotification, isMobile } = useUIStore();
-  const { createRandomAnimal, addAnimal, animals } = useAnimalStore();
+  const { createRandomAnimal, addAnimal } = useAnimalStore();
   
   const [adoptableAnimals, setAdoptableAnimals] = useState<Animal[]>([]);
   const [currentAnimalIndex, setCurrentAnimalIndex] = useState(0);
@@ -191,279 +191,315 @@ const Rescue: React.FC = () => {
               <Box>
                 <Text size="sm" fw={600} c="red.7">Shelter at Capacity</Text>
                 <Text size="sm" c="red.6">
-                  You need to find homes for some animals before adopting new ones.
+                  You need to find homes for some animals before rescuing new ones.
                 </Text>
               </Box>
             </Group>
           </Paper>
         )}
 
-        {/* Main Adoption Carousel */}
-        <Paper p="xl" radius="lg" bg="pink.0" style={{ border: '2px solid var(--mantine-color-pink-3)' }}>
-          <Stack gap="xl">
-            {/* Animal Counter */}
-            <Group justify="center">
-              <Badge size="lg" variant="light" color="pink">
-                {currentAnimalIndex + 1} of {adoptableAnimals.length}
-              </Badge>
-            </Group>
+        {/* MOBILE LAYOUT */}
+        {isMobile ? (
+          <Stack gap="md">
+            {/* Mobile Navigation */}
+            <Paper p="md" radius="md" bg="pink.0">
+              <Stack gap="sm" align="center">
+                {/* Navigation Buttons */}
+                <Group justify="center" gap="lg">
+                  <Button
+                    variant="light"
+                    color="pink"
+                    size="sm"
+                    onClick={handlePreviousAnimal}
+                    disabled={adoptableAnimals.length <= 1}
+                    leftSection={<ChevronLeft size={16} />}
+                    style={{ minWidth: '100px' }}
+                  >
+                    Previous
+                  </Button>
+                  
+                  <Button
+                    variant="light"
+                    color="pink"
+                    size="sm"
+                    onClick={handleNextAnimal}
+                    disabled={adoptableAnimals.length <= 1}
+                    rightSection={<ChevronRight size={16} />}
+                    style={{ minWidth: '100px' }}
+                  >
+                    Next
+                  </Button>
+                </Group>
+                
+                {/* Counter Badge */}
+                <Badge size="lg" variant="light" color="pink">
+                  {currentAnimalIndex + 1} of {adoptableAnimals.length}
+                </Badge>
+              </Stack>
+            </Paper>
 
-            {/* Navigation Arrows & Animal Display */}
-            <Group justify="center" align="center" gap="xl">
-              <Button
-                variant="light"
-                color="pink"
-                size="m"
-                onClick={handlePreviousAnimal}
-                disabled={adoptableAnimals.length <= 1}
-                style={{ borderRadius: '50%', width: '60px', height: '60px' }}
-              >
-                <ChevronLeft size={24} />
-              </Button>
+            {/* Mobile Animal Card */}
+            <Card
+              padding="md"
+              radius="lg"
+              withBorder
+              style={{
+                border: '2px solid var(--mantine-color-pink-4)',
+                backgroundColor: 'white',
+                height: '500px'
+              }}
+            >
+              <Stack gap="md">
+                {/* Header */}
+                <Group justify="space-between" align="flex-start">
+                  <Box style={{ flex: 1 }}>
+                    <Title order={4} c="pink.8" mb={4}>
+                      {currentAnimal.name}
+                    </Title>
+                    <Group gap="xs" wrap="wrap">
+                      <Badge size="xs" variant="light" color="blue">
+                        {currentAnimal.breed}
+                      </Badge>
+                      <Badge size="xs" variant="light" color="gray">
+                        {currentAnimal.size} • {currentAnimal.age}
+                      </Badge>
+                    </Group>
+                  </Box>
+                  <Badge 
+                    size="md" 
+                    variant="filled" 
+                    color={getHealthColor(currentAnimal.health)}
+                  >
+                    ${currentAnimal.adoptionFee}
+                  </Badge>
+                </Group>
 
-              {/* Animal Card */}
-              <Card
-                padding="xl"
-                radius="lg"
-                withBorder
-                style={{
-                  border: '2px solid var(--mantine-color-pink-4)',
-                  backgroundColor: 'white',
-                  height: '620px', // Fixed height instead of minHeight
-                  width: isMobile ? '300px' : '400px',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-              >
-                <Flex direction="column" style={{ height: '100%' }}>
-                  {/* Animal Header - Fixed height section */}
-                  <Box style={{ minHeight: '80px' }} mb="md">
-                    <Group justify="space-between" align="flex-start">
+                {/* Sprite */}
+                <Center py="lg">
+                  <Box style={{ transform: 'scale(2)' }}>
+                    <AnimalSprite
+                      breed={currentAnimal.breed}
+                      color={currentAnimal.color}
+                      animation="idle"
+                      size={64}
+                    />
+                  </Box>
+                </Center>
+
+                {/* Quick Stats Grid */}
+                <SimpleGrid cols={3} spacing="xs">
+                  <Box ta="center">
+                    <Text size="lg" fw={700} c={getHealthColor(currentAnimal.health)}>
+                      {currentAnimal.health}%
+                    </Text>
+                    <Text size="xs" c="gray.6">Health</Text>
+                  </Box>
+                  <Box ta="center">
+                    <Text size="lg" fw={700} c="pink.6">
+                      {currentAnimal.happiness}%
+                    </Text>
+                    <Text size="xs" c="gray.6">Happiness</Text>
+                  </Box>
+                  <Box ta="center">
+                    <Text size="lg" fw={700} c="green.6">
+                      {currentAnimal.energy}
+                    </Text>
+                    <Text size="xs" c="gray.6">Energy</Text>
+                  </Box>
+                </SimpleGrid>
+
+                {/* Temperament */}
+                {currentAnimal.temperament.length > 0 && (
+                  <Group gap="xs" justify="center">
+                    {currentAnimal.temperament.slice(0, 3).map((trait, index) => (
+                      <Badge
+                        key={index}
+                        size="xs"
+                        variant="light"
+                        color={getTemperamentColor(currentAnimal.temperament)}
+                      >
+                        {trait}
+                      </Badge>
+                    ))}
+                  </Group>
+                )}
+
+                {/* Backstory */}
+                <Paper p="sm" bg="gray.0" radius="md">
+                  <Text size="sm" c="gray.7" ta="center" style={{ fontStyle: 'italic' }}>
+                    "{currentAnimal.backstory}"
+                  </Text>
+                </Paper>
+
+                {/* Special Needs */}
+                {currentAnimal.needsMedical && (
+                  <Paper p="sm" bg="orange.0" radius="md" style={{ border: '1px solid var(--mantine-color-orange-3)' }}>
+                    <Group gap="xs" justify="center">
+                      <Text size="sm">⚕️</Text>
+                      <Text size="sm" c="orange.7" fw={600}>
+                        Needs medical attention
+                      </Text>
+                    </Group>
+                  </Paper>
+                )}
+
+                {/* Rescue Button */}
+                <Button
+                  fullWidth
+                  size="lg"
+                  color="pink"
+                  disabled={!canAdopt || isLoading}
+                  loading={isLoading}
+                  onClick={() => handleAdoptAnimal()}
+                  leftSection={<Heart size={16} />}
+                >
+                  {!canAdopt ? 'Shelter Full' : `Rescue ${currentAnimal.name}`}
+                </Button>
+              </Stack>
+            </Card>
+          </Stack>
+        ) : (
+          /* DESKTOP LAYOUT - Grid of all animals */
+          <Stack gap="lg">
+            {/* Desktop Header */}
+            <Paper p="md" radius="md" bg="pink.0">
+              <Group justify="space-between" align="center">
+                <Text size="sm" fw={600} c="pink.7">
+                  {adoptableAnimals.length} animals awaiting rescue
+                </Text>
+                <Button
+                  variant="light"
+                  color="blue"
+                  size="sm"
+                  leftSection={<Sparkles size={16} />}
+                  onClick={refreshAdoptableAnimals}
+                >
+                  Refresh Animals
+                </Button>
+              </Group>
+            </Paper>
+
+            {/* Desktop Grid */}
+            <SimpleGrid cols={2} spacing="lg">
+              {adoptableAnimals.map((animal, index) => (
+                <Card
+                  key={animal.id}
+                  padding="lg"
+                  radius="lg"
+                  withBorder
+                  style={{
+                    border: index === currentAnimalIndex 
+                      ? '3px solid var(--mantine-color-pink-5)' 
+                      : '2px solid var(--mantine-color-pink-4)',
+                    backgroundColor: 'white',
+                    height: '380px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    transform: index === currentAnimalIndex ? 'scale(1.02)' : 'scale(1)',
+                    boxShadow: index === currentAnimalIndex ? '0 8px 25px rgba(236, 72, 153, 0.15)' : 'none'
+                  }}
+                  onClick={() => setCurrentAnimalIndex(index)}
+                >
+                  <Flex direction="column" style={{ height: '100%' }}>
+                    {/* Header */}
+                    <Group justify="space-between" align="flex-start" mb="md">
                       <Box style={{ flex: 1, minWidth: 0 }}>
-                        <Title 
-                          order={3} 
-                          c="pink.8" 
-                          mb={4}
-                          style={{ 
-                            lineHeight: 1.2,
-                            wordBreak: 'break-word'
-                          }}
-                        >
-                          {currentAnimal.name}
+                        <Title order={4} c="pink.8" mb={4} style={{ wordBreak: 'break-word' }}>
+                          {animal.name}
                         </Title>
                         <Group gap="xs" wrap="wrap">
-                          <Badge size="sm" variant="light" color="blue">
-                            {currentAnimal.breed}
+                          <Badge size="xs" variant="light" color="blue">
+                            {animal.breed}
                           </Badge>
-                          <Badge size="sm" variant="light" color="gray">
-                            {currentAnimal.size} • {currentAnimal.age}
+                          <Badge size="xs" variant="light" color="gray">
+                            {animal.size} • {animal.age}
                           </Badge>
                         </Group>
                       </Box>
                       <Badge 
-                        size="lg" 
+                        size="md" 
                         variant="filled" 
-                        color={getHealthColor(currentAnimal.health)}
-                        style={{ flexShrink: 0, marginLeft: '8px' }}
+                        color={getHealthColor(animal.health)}
+                        style={{ flexShrink: 0 }}
                       >
-                        ${currentAnimal.adoptionFee}
+                        ${animal.adoptionFee}
                       </Badge>
                     </Group>
-                  </Box>
 
-                  {/* Animal Sprite - Fixed height section with more padding */}
-                  <Center style={{ height: '140px' }} mb="md">
-                    <Box style={{ transform: 'scale(2)' }}>
-                      <AnimalSprite
-                        breed={currentAnimal.breed}
-                        color={currentAnimal.color}
-                        animation="idle"
-                        size={64}
-                      />
-                    </Box>
-                  </Center>
+                    {/* Sprite */}
+                    <Center style={{ flex: 1 }} mb="md">
+                      <Box style={{ transform: 'scale(1.5)' }}>
+                        <AnimalSprite
+                          breed={animal.breed}
+                          color={animal.color}
+                          animation="idle"
+                          size={64}
+                        />
+                      </Box>
+                    </Center>
 
-                  {/* Animal Stats - Fixed height section */}
-                  <Box style={{ minHeight: '90px' }} mb="md">
-                    <Stack gap="sm">
-                      <Group justify="space-between">
-                        <Text size="sm" c="gray.6">Health</Text>
-                        <Group gap="xs">
-                          <Progress
-                            value={currentAnimal.health}
-                            size="sm"
-                            color={getHealthColor(currentAnimal.health)}
-                            style={{ width: '100px' }}
-                          />
-                          <Text size="sm" fw={600}>{currentAnimal.health}%</Text>
-                        </Group>
-                      </Group>
+                    {/* Stats */}
+                    <SimpleGrid cols={3} spacing="xs" mb="md">
+                      <Box ta="center">
+                        <Text size="sm" fw={700} c={getHealthColor(animal.health)}>
+                          {animal.health}%
+                        </Text>
+                        <Text size="xs" c="gray.6">Health</Text>
+                      </Box>
+                      <Box ta="center">
+                        <Text size="sm" fw={700} c="pink.6">
+                          {animal.happiness}%
+                        </Text>
+                        <Text size="xs" c="gray.6">Happy</Text>
+                      </Box>
+                      <Box ta="center">
+                        <Text size="sm" fw={700} c="green.6">
+                          {animal.energy}
+                        </Text>
+                        <Text size="xs" c="gray.6">Energy</Text>
+                      </Box>
+                    </SimpleGrid>
 
-                      <Group justify="space-between">
-                        <Text size="sm" c="gray.6">Happiness</Text>
-                        <Group gap="xs">
-                          <Progress
-                            value={currentAnimal.happiness}
-                            size="sm"
-                            color="pink"
-                            style={{ width: '100px' }}
-                          />
-                          <Text size="sm" fw={600}>{currentAnimal.happiness}%</Text>
-                        </Group>
-                      </Group>
+                    {/* Traits */}
+                    <Group justify="center" mb="md" style={{ minHeight: '20px' }}>
+                      {animal.needsMedical && (
+                        <Badge size="xs" color="orange" variant="light">
+                          ⚕️ Medical
+                        </Badge>
+                      )}
+                      {animal.temperament.slice(0, 2).map((trait, traitIndex) => (
+                        <Badge
+                          key={traitIndex}
+                          size="xs"
+                          variant="light"
+                          color={getTemperamentColor(animal.temperament)}
+                        >
+                          {trait}
+                        </Badge>
+                      ))}
+                    </Group>
 
-                      <Group justify="space-between">
-                        <Text size="sm" c="gray.6">Energy</Text>
-                        <Group gap="xs">
-                          <Progress
-                            value={(currentAnimal.energy / currentAnimal.maxEnergy) * 100}
-                            size="sm"
-                            color="green"
-                            style={{ width: '100px' }}
-                          />
-                          <Text size="sm" fw={600}>
-                            {currentAnimal.energy}/{currentAnimal.maxEnergy}
-                          </Text>
-                        </Group>
-                      </Group>
-                    </Stack>
-                  </Box>
-
-                  {/* Temperament - Fixed height section */}
-                  <Box style={{ minHeight: '40px' }} mb="md">
-                    {currentAnimal.temperament.length > 0 && (
-                      <Group gap="xs">
-                        <Text size="sm" c="gray.6">Personality:</Text>
-                        <Group gap={4}>
-                          {currentAnimal.temperament.slice(0, 3).map((trait, index) => (
-                            <Badge
-                              key={index}
-                              size="xs"
-                              variant="light"
-                              color={getTemperamentColor(currentAnimal.temperament)}
-                            >
-                              {trait}
-                            </Badge>
-                          ))}
-                        </Group>
-                      </Group>
-                    )}
-                  </Box>
-
-                  {/* Backstory - Flexible content area */}
-                  <Paper 
-                    p="md" 
-                    bg="gray.0" 
-                    radius="md" 
-                    mb="md"
-                    style={{ flex: 1, display: 'flex', alignItems: 'flex-start' }}
-                  >
-                    <Text 
-                      size="sm" 
-                      c="gray.7" 
-                      style={{ 
-                        fontStyle: 'italic',
-                        overflow: 'hidden',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: 'vertical'
+                    {/* Button */}
+                    <Button
+                      fullWidth
+                      size="sm"
+                      color="pink"
+                      disabled={!canAdopt || isLoading}
+                      loading={isLoading && currentAnimalIndex === index}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAdoptAnimal();
                       }}
+                      leftSection={<Heart size={16} />}
                     >
-                      "{currentAnimal.backstory}"
-                    </Text>
-                  </Paper>
-
-                  {/* Special Needs Warning - Fixed at bottom */}
-                  <Box style={{ minHeight: currentAnimal.needsMedical ? '50px' : '0px' }} mb="md">
-                    {currentAnimal.needsMedical && (
-                      <Paper p="md" bg="orange.0" radius="md" style={{ border: '1px solid var(--mantine-color-orange-3)' }}>
-                        <Group gap="xs">
-                          <Text size="sm">⚕️</Text>
-                          <Text size="sm" c="orange.7" fw={600}>
-                            This animal needs medical attention
-                          </Text>
-                        </Group>
-                      </Paper>
-                    )}
-                  </Box>
-                  {/* Adoption Button - Always at bottom */}
-                  <Button
-                    fullWidth
-                    size="lg"
-                    color="pink"
-                    disabled={!canAdopt || isLoading}
-                    loading={isLoading}
-                    onClick={handleAdoptAnimal}
-                    leftSection={<Heart size={20} />}
-                  >
-                    {!canAdopt ? 'Shelter Full' : `Rescue ${currentAnimal.name}`}
-                  </Button>
-                </Flex>
-              </Card>
-
-              <Button
-                variant="light"
-                color="pink"
-                size="m"
-                onClick={handleNextAnimal}
-                disabled={adoptableAnimals.length <= 1}
-                style={{ borderRadius: '50%', width: '60px', height: '60px' }}
-              >
-                <ChevronRight size={24} />
-              </Button>
-            </Group>
-
-            {/* Animal Dots Indicator */}
-            <Group justify="center" gap="xs">
-              {adoptableAnimals.map((_, index) => (
-                <Box
-                  key={index}
-                  onClick={() => setCurrentAnimalIndex(index)}
-                  style={{
-                    width: '12px',
-                    height: '12px',
-                    borderRadius: '50%',
-                    backgroundColor: index === currentAnimalIndex 
-                      ? 'var(--mantine-color-pink-5)' 
-                      : 'var(--mantine-color-gray-3)',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease'
-                  }}
-                />
+                      {!canAdopt ? 'Shelter Full' : `Rescue ${animal.name}`}
+                    </Button>
+                  </Flex>
+                </Card>
               ))}
-            </Group>
+            </SimpleGrid>
           </Stack>
-        </Paper>
-
-        {/* Action Buttons */}
-        <Group justify="center" gap="md">
-          <Button
-            variant="light"
-            color="blue"
-            leftSection={<Sparkles size={16} />}
-            onClick={refreshAdoptableAnimals}
-          >
-            Find More Animals
-          </Button>
-        </Group>
-
-        {/* Stats Footer */}
-        <Paper p="md" radius="md" bg="gray.0">
-          <Group justify="space-around" ta="center">
-            <Box>
-              <Text size="lg" fw={700} c="pink.6">{animals.length}</Text>
-              <Text size="xs" c="gray.6">Animals in Shelter</Text>
-            </Box>
-            <Box>
-              <Text size="lg" fw={700} c="green.6">{occupancy.max - occupancy.current}</Text>
-              <Text size="xs" c="gray.6">Space Available</Text>
-            </Box>
-            <Box>
-              <Text size="lg" fw={700} c="blue.6">{adoptableAnimals.length}</Text>
-              <Text size="xs" c="gray.6">Awaiting Rescue</Text>
-            </Box>
-          </Group>
-        </Paper>
+        )}
       </Stack>
     </Container>
   );
