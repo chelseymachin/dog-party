@@ -21,6 +21,7 @@ const AnimalSprite: React.FC<AnimalSpriteProps> = ({
 
   const [currentFrame, setCurrentFrame] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   const getBreedData = () => {
     const formattedBreed = breed.toLowerCase().replace(/\s+/g, '_');
@@ -78,15 +79,63 @@ const AnimalSprite: React.FC<AnimalSpriteProps> = ({
 
   const animationConfig = getAnimationConfig();
 
+  useEffect(() => {
+    if (!breedData || !animationConfig.frames.length) return;
+
+    const formattedBreed = breed.toLowerCase().replace(/\s+/g, '_');
+    const formattedColor = color.toLowerCase();
+    
+    // Get all frame paths for this breed/color combination
+    const allFramePaths: string[] = [];
+    Object.values(breedData.animationData.animations).forEach(anim => {
+      if (anim) {
+        anim.frames.forEach(framePath => {
+          const fullPath = `/sprites/${formattedBreed}/${formattedColor}/${framePath}`;
+          if (!allFramePaths.includes(fullPath)) {
+            allFramePaths.push(fullPath);
+          }
+        });
+      }
+    });
+
+    // Preload all images
+    let loadedCount = 0;
+    const totalImages = allFramePaths.length;
+
+    if (totalImages === 0) {
+      setImagesLoaded(true);
+      return;
+    }
+
+    allFramePaths.forEach(path => {
+      const img = new Image();
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === totalImages) {
+          setImagesLoaded(true);
+        }
+      };
+      img.onerror = () => {
+        loadedCount++;
+        if (loadedCount === totalImages) {
+          setImagesLoaded(true);
+        }
+      };
+      img.src = path;
+    });
+  }, [breed, color, breedData]);
+
   // Reset animation when animation prop changes
   useEffect(() => {
-    setIsAnimating(true);
-    setCurrentFrame(0);
-  }, [animation, breed, color]);
+    if (imagesLoaded) {
+      setIsAnimating(true);
+      setCurrentFrame(0);
+    }
+  }, [animation, breed, color, imagesLoaded]);
 
   // Handle animation frame progression
   useEffect(() => {
-    if (!isAnimating || !animationConfig.frames.length) return;
+    if (!isAnimating || !animationConfig.frames.length || !imagesLoaded) return;
 
     const frameInterval = animationConfig.duration / animationConfig.frames.length;
     
