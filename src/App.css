@@ -14,3 +14,18 @@ html, body, #root {
 body {
   background-color: var(--mantine-color-pink-0) !important;
 }
+
+.mantine-Modal-root {
+  position: fixed !important;
+  inset: 0 !important;
+  margin: 0 !important;
+}
+
+.mantine-Modal-inner {
+  position: fixed !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+}
