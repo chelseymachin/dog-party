@@ -21,7 +21,7 @@ interface AnimalCardProps {
 }
 
 const AnimalCard: React.FC<AnimalCardProps> = ({ animal }) => {
-  const [currentAnimation, setCurrentAnimation] = useState<'idle' | 'feeding' | 'walking' | 'medical' | 'playing'>('idle');
+  const [currentAnimation, setCurrentAnimation] = useState<'idle' | 'feed' | 'walk' | 'medical' | 'play'>('idle');
   const lastActionResult = useUIStore(state => state.lastActionResult);
   const { openModal, selectAnimal } = useUIStore();
 

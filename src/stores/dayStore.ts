@@ -141,6 +141,7 @@ export const useDayStore = create<DayStore>()(
             grooming: 0,
             training: 0,
             socialization: 0,
+            idle: 0
           },
           animalsHelpedToday: new Set(),
           moneyEarnedToday: 0,
@@ -253,6 +254,7 @@ export const useDayStore = create<DayStore>()(
             grooming: 0,
             training: 0,
             socialization: 0,
+            idle: 0,
           },
           animalsHelpedToday: new Set(),
           moneyEarnedToday: 0,
