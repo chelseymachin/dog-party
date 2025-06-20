@@ -23,9 +23,6 @@ import {
   Heart, 
   Zap, 
   Sparkles, 
-  Calendar,
-  DollarSign,
-  Info,
   Home,
   Star,
   Clock,
@@ -33,7 +30,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
-import { useUIStore, useAnimalStore, useGameStore } from '@/stores';
+import { useUIStore, useAnimalStore } from '@/stores';
 import { type ActionType } from '@/types';
 import AnimalSprite from './AnimalSprite';
 import ActionButton from './ActionButton';
@@ -167,11 +164,9 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
                     {getStatusLabel()}
                   </Badge>
                   <Badge color="gray" variant="outline" size="md">
-                    <Calendar size={12} style={{ marginRight: 4 }} />
                     Day {animal.daysInShelter + 1}
                   </Badge>
                   <Badge color="green" variant="outline" size="md">
-                    <DollarSign size={12} style={{ marginRight: 4 }} />
                     ${animal.adoptionFee}
                   </Badge>
                 </Group>
