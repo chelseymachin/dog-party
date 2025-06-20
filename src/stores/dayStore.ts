@@ -64,10 +64,11 @@ interface DayStore {
   // Goal management
   generateDailyGoals: () => DailyGoal[];
   checkGoalCompletion: (goalId: string) => boolean;
+  checkAllGoals: () => string[];
   completeGoal: (goalId: string) => void;
   
   // Action tracking
-  recordAction: (action: ActionType, animalId: string) => void;
+  recordAction: (action: ActionType, animalId: string) => string[];
   recordMoney: (amount: number, type: 'earned' | 'spent') => void;
   
   // Events
@@ -296,35 +297,58 @@ export const useDayStore = create<DayStore>()(
         
         return selectedGoals;
       },
+
+      checkAllGoals: () => {
+        const state = get();
+        const newlyCompleted: string[] = [];
+        
+        state.currentDayGoals.forEach(goal => {
+          if (!state.completedGoals.includes(goal.id) && get().checkGoalCompletion(goal.id)) {
+            newlyCompleted.push(goal.id);
+            get().completeGoal(goal.id);
+          }
+        });
+        console.log(state.currentDayGoals)
+        
+        return newlyCompleted;
+      },
       
       checkGoalCompletion: (goalId: string) => {
-        const goal = get().currentDayGoals.find(g => g.id === goalId);
+        const state = get();
+        const goal = state.currentDayGoals.find(g => g.id === goalId);
         if (!goal) return false;
         
-        const state = get();
+        // Check if already completed
+        if (state.completedGoals.includes(goalId)) return true;
         
-        // Check different types of requirements
-        if (goal.requirements.actionsRequired) {
-          if (state.actionsPerformedToday < goal.requirements.actionsRequired) {
-            return false;
-          }
-        }
-        
-        if (goal.requirements.specificActions) {
-          for (const [action, required] of Object.entries(goal.requirements.specificActions)) {
-            if (state.actionBreakdown[action as ActionType] < required) {
-              return false;
+        // Check completion based on goal type
+        switch (goal.type) {
+          case 'care':
+            if (goal.requirements?.specificActions) {
+              const required = goal.requirements.specificActions;
+              return Object.entries(required).every(([action, count]) => {
+                return state.actionBreakdown[action as ActionType] >= count;
+              });
             }
-          }
+            break;
+            
+          case 'efficiency':
+            if (goal.requirements?.energyEfficiency && goal.requirements?.actionsRequired) {
+              const efficiency = state.actionsPerformedToday / Math.max(1, 10); // Assuming 10 max energy
+              return state.actionsPerformedToday >= goal.requirements.actionsRequired && 
+                     efficiency >= goal.requirements.energyEfficiency;
+            }
+            break;
+            
+          case 'adoption':
+            if (goal.requirements?.adoptionsNeeded) {
+              // This would need to be tracked - you'll need to add adoption tracking
+              return false; // Implement when adoption system is ready
+            }
+            break;
         }
         
-        if (goal.requirements.animalsToHelp) {
-          if (state.animalsHelpedToday.size < goal.requirements.animalsToHelp) {
-            return false;
-          }
-        }
-        
-        return true;
+        return false;
       },
       
       completeGoal: (goalId: string) => {
@@ -350,13 +374,10 @@ export const useDayStore = create<DayStore>()(
           },
           animalsHelpedToday: new Set([...state.animalsHelpedToday, animalId]),
         }), false, 'recordAction');
+
+        const newlyCompleted = get().checkAllGoals();
         
-        // Check for goal completion
-        get().currentDayGoals.forEach(goal => {
-          if (!get().completedGoals.includes(goal.id) && get().checkGoalCompletion(goal.id)) {
-            get().completeGoal(goal.id);
-          }
-        });
+        return newlyCompleted;
       },
       
       recordMoney: (amount: number, type: 'earned' | 'spent') => {

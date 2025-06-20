@@ -124,10 +124,10 @@ export const DAILY_GOAL_TEMPLATES: DailyGoal[] = [
   {
     id: 'basic_care',
     title: 'Basic Care Day',
-    description: 'Feed and walk all animals in the shelter',
+    description: 'Feed and walk an animal in the shelter',
     type: 'care',
     requirements: {
-        specificActions: { feed: 3, walk: 3, play: 0, medical: 0, exercise: 0, grooming: 0, training: 0, socialization: 0 }
+        specificActions: { feed: 1, walk: 1, play: 0, medical: 0, exercise: 0, grooming: 0, training: 0, socialization: 0 }
     },
     rewards: {
       money: 50,

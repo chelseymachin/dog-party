@@ -18,11 +18,9 @@ import GoalsPanel from '../Day/GoalsPanel';
 import { useMediaQuery } from '@mantine/hooks';
 
 const Dashboard: React.FC = () => {
-  // Get all the data we need for the dashboard
   const animals = useAnimalStore(state => state.animals);
   const animalStore = useAnimalStore();
   
-  // Call store functions properly (not in selectors)
   const animalsNeedingCare = animalStore.getAnimalsNeedingCare();
   const adoptableAnimals = animalStore.getAdoptableAnimals();
   
@@ -38,7 +36,6 @@ const Dashboard: React.FC = () => {
   
   const playerEnergy = usePlayerStore(state => state.player.energy);
   
-  // Determine alerts and urgency
   const hasUrgentCare = animalsNeedingCare.length > 0;
   const hasLowEnergy = playerEnergy <= 3;
   const hasAdoptableAnimals = adoptableAnimals.length > 0;

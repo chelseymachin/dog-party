@@ -93,13 +93,48 @@ export const useGameActions = () => {
         
         // Perform the action
         const result = animalStore.performAction(animalId, actionType, actionCost);
+        console.log(result)
 
         if (result.success) {
+          
           // Grant experience
           const expResult = playerStore.gainExperience(result.experienceGained);
           
           // Record the action for day tracking
-          dayStore.recordAction(actionType, animalId);
+          const newlyCompleted = dayStore.recordAction(actionType, animalId);
+          console.log(newlyCompleted)
+
+          newlyCompleted.forEach((goalId: string) => {
+            const goal = dayStore.currentDayGoals.find(g => g.id === goalId);
+            if (goal?.rewards) {
+              // Apply goal rewards
+              if (goal.rewards.money) {
+                gameStore.addMoney(goal.rewards.money, `goal:${goalId}`);
+              }
+              if (goal.rewards.experience) {
+                const expResult = playerStore.gainExperience(goal.rewards.experience);
+                if (expResult.leveledUp) {
+                  uiStore.addQuickNotification('success', 'Level Up!', `Congratulations! You reached level ${expResult.newLevel}!`);
+                }
+              }
+              if (goal.rewards.reputation) {
+                playerStore.updateReputation(goal.rewards.reputation);
+              }
+              if (goal.rewards.energyBonus) {
+                playerStore.restoreEnergy(goal.rewards.energyBonus);
+              }
+              if (goal.rewards.items) {
+                // Add items to inventory (implement when inventory system is ready)
+              }
+              
+              // Show goal completion notification
+              uiStore.addQuickNotification(
+                'achievement',
+                'Goal Completed!',
+                `${goal.title} - ${goal.description}`
+              );
+            }
+          });
           
           // Update game stats
           gameStore.updateShelterStats();
