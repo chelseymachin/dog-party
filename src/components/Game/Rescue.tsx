@@ -240,13 +240,12 @@ const Rescue: React.FC = () => {
 
             {/* Mobile Animal Card */}
             <Card
-              padding="md"
+              padding="lg"
               radius="lg"
               withBorder
               style={{
                 border: '2px solid var(--mantine-color-pink-4)',
-                backgroundColor: 'white',
-                height: '500px'
+                backgroundColor: 'white'
               }}
             >
               <Stack gap="md">
@@ -308,21 +307,24 @@ const Rescue: React.FC = () => {
                   </Box>
                 </SimpleGrid>
 
-                {/* Temperament */}
-                {currentAnimal.temperament.length > 0 && (
-                  <Group gap="xs" justify="center">
-                    {currentAnimal.temperament.slice(0, 3).map((trait, index) => (
-                      <Badge
-                        key={index}
-                        size="xs"
-                        variant="light"
-                        color={getTemperamentColor(currentAnimal.temperament)}
-                      >
-                        {trait}
-                      </Badge>
-                    ))}
-                  </Group>
-                )}
+                {/* Temperament & Medical */}
+                <Group gap="xs" justify="center" wrap="wrap">
+                  {currentAnimal.needsMedical && (
+                    <Badge size="xs" color="orange" variant="light">
+                      ⚕️ Medical
+                    </Badge>
+                  )}
+                  {currentAnimal.temperament.slice(0, 3).map((trait, index) => (
+                    <Badge
+                      key={index}
+                      size="xs"
+                      variant="light"
+                      color="blue"
+                    >
+                      {trait}
+                    </Badge>
+                  ))}
+                </Group>
 
                 {/* Backstory */}
                 <Paper p="sm" bg="gray.0" radius="md">
@@ -330,18 +332,6 @@ const Rescue: React.FC = () => {
                     "{currentAnimal.backstory}"
                   </Text>
                 </Paper>
-
-                {/* Special Needs */}
-                {currentAnimal.needsMedical && (
-                  <Paper p="sm" bg="orange.0" radius="md" style={{ border: '1px solid var(--mantine-color-orange-3)' }}>
-                    <Group gap="xs" justify="center">
-                      <Text size="sm">⚕️</Text>
-                      <Text size="sm" c="orange.7" fw={600}>
-                        Needs medical attention
-                      </Text>
-                    </Group>
-                  </Paper>
-                )}
 
                 {/* Rescue Button */}
                 <Button
