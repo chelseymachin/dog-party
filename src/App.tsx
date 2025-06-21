@@ -5,6 +5,7 @@ import { MantineProvider, createTheme, Text, Paper } from '@mantine/core';
 import Dashboard from './components/Game/Dashboard';
 import Shop from './components/Game/Shop';
 import Rescue from './components/Game/Rescue';
+import Statistics from './components/Game/Statistics';
 import { useUIStore } from '@/stores';
 import MainLayout from './components/Layout/MainLayout';
 
@@ -56,12 +57,7 @@ const App: React.FC = () => {
       case 'rescue':
         return <Rescue />;
       case 'stats':
-        return (
-          <Paper p="xl" radius="md" ta="center">
-            <Text size="xl" mb="md">📊 Statistics</Text>
-            <Text c="gray.6">Coming soon! This will show your shelter's performance data.</Text>
-          </Paper>
-        );
+        return <Statistics />;
       case 'settings':
         return (
           <Paper p="xl" radius="md" ta="center">
