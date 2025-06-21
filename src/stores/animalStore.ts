@@ -169,7 +169,6 @@ export const useAnimalStore = create<AnimalStore>()(
             happiness: happinessChange * multiplier,
             adoptionReadiness: adoptionChange * multiplier,
           },
-          message: `Successfully ${action} ${animal.name}${criticalSuccess ? ' (Critical Success!)' : ''}`,
           energyUsed: { player: playerEnergyUsed, animal: animalEnergyCost },
           experienceGained: effects.experience || 1,
           criticalSuccess,

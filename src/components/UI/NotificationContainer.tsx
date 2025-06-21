@@ -23,9 +23,8 @@ import { useUIStore } from '@/stores';
 import { type NotificationType } from '@/types';
 
 const NotificationContainer: React.FC = () => {
-  const { notifications, removeNotification } = useUIStore();
+  const { notifications, removeNotification, isMobile } = useUIStore();
   
-  // Auto-remove non-persistent notifications
   useEffect(() => {
     notifications.forEach(notification => {
       if (!notification.persistent && notification.duration) {
@@ -98,11 +97,13 @@ const NotificationContainer: React.FC = () => {
     <div style={{
       position: 'fixed',
       top: 80,
-      right: 20,
+      left: isMobile ? '50%' : 'auto',
+      right: isMobile ? 'auto' : 20,
+      transform: isMobile ? 'translateX(-50%)' : 'none',
       zIndex: 1000,
-      maxWidth: '400px',
-      width: '100%',
-      pointerEvents: 'none', // Allow clicks through the container
+      maxWidth: isMobile ? '90vw' : '400px',
+      width: isMobile ? '90vw' : '100%',
+      pointerEvents: 'none', 
     }}>
       <Stack gap="sm">
         {notifications.slice(-5).map(notification => (
@@ -117,15 +118,16 @@ const NotificationContainer: React.FC = () => {
               <Paper
                 style={{
                   ...styles,
-                  pointerEvents: 'auto', // Re-enable clicks for individual notifications
+                  pointerEvents: 'auto', 
                   backgroundColor: getNotificationBackground(notification.type),
                   border: getNotificationBorder(notification.type),
-                  padding: '12px 16px',
+                  padding: isMobile ? '10px 12px' : '12px 16px',
                   borderRadius: '8px',
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  width: '100%',
                 }}
               >
-                <Group align="flex-start" wrap="nowrap">
+                <Group align="flex-start" wrap="nowrap" gap={isMobile ? "xs" : "sm"}>
                   {/* Icon */}
                   <div style={{ 
                     color: `var(--mantine-color-${getNotificationColor(notification.type)}-6)`,
@@ -133,7 +135,7 @@ const NotificationContainer: React.FC = () => {
                     flexShrink: 0
                   }}>
                     {notification.icon ? (
-                      <span style={{ fontSize: '18px' }}>{notification.icon}</span>
+                      <span style={{ fontSize: isMobile ? '16px' : '18px' }}>{notification.icon}</span>
                     ) : (
                       getNotificationIcon(notification.type)
                     )}
@@ -143,7 +145,7 @@ const NotificationContainer: React.FC = () => {
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <Group justify="space-between" align="flex-start" mb={4}>
                       <Text 
-                        size="sm" 
+                        size={isMobile ? "xs" : "sm"}
                         fw={600} 
                         c={`${getNotificationColor(notification.type)}.7`}
                         style={{ lineHeight: 1.3 }}
@@ -159,14 +161,14 @@ const NotificationContainer: React.FC = () => {
                     </Group>
                     
                     <Text 
-                      size="sm" 
+                      size={isMobile ? "xs" : "sm"}
                       c="gray.7"
                       style={{ lineHeight: 1.4 }}
                     >
                       {notification.message}
                     </Text>
                     
-                    {/* Action buttons if any */}
+                    {/* Action buttons */}
                     {notification.actions && notification.actions.length > 0 && (
                       <Group gap="xs" mt="xs">
                         {notification.actions.map((action, index) => (
@@ -175,20 +177,28 @@ const NotificationContainer: React.FC = () => {
                             style={{
                               background: action.style === 'primary' 
                                 ? `var(--mantine-color-${getNotificationColor(notification.type)}-6)`
-                                : 'transparent',
-                              color: action.style === 'primary' 
-                                ? 'white' 
-                                : `var(--mantine-color-${getNotificationColor(notification.type)}-7)`,
-                              border: `1px solid var(--mantine-color-${getNotificationColor(notification.type)}-4)`,
+                                : action.style === 'danger' 
+                                ? 'var(--mantine-color-red-6)'
+                                : 'var(--mantine-color-gray-2)',
+                              color: action.style === 'secondary' 
+                                ? 'var(--mantine-color-gray-8)'
+                                : 'white',
+                              border: 'none',
+                              padding: isMobile ? '4px 8px' : '6px 12px',
                               borderRadius: '4px',
-                              padding: '4px 8px',
-                              fontSize: '12px',
-                              cursor: 'pointer',
+                              fontSize: isMobile ? '11px' : '12px',
                               fontWeight: 500,
+                              cursor: 'pointer',
+                              transition: 'all 0.2s ease',
                             }}
                             onClick={() => {
-                              // Handle action click here
-                              console.log('Action clicked:', action.action);
+                              removeNotification(notification.id);
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.opacity = '0.8';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.opacity = '1';
                             }}
                           >
                             {action.label}
@@ -198,61 +208,24 @@ const NotificationContainer: React.FC = () => {
                     )}
                   </div>
                   
-                  {/* Close button */}
-                  {!notification.persistent && (
+                  {/* Close button - Show on mobile or persistent notifications */}
+                  {(isMobile || notification.persistent) && (
                     <ActionIcon
                       size="sm"
                       variant="subtle"
-                      color={getNotificationColor(notification.type)}
+                      color="gray"
                       onClick={() => removeNotification(notification.id)}
-                      style={{ flexShrink: 0 }}
+                      style={{ flexShrink: 0, marginTop: '-2px' }}
                     >
                       <X size={14} />
                     </ActionIcon>
                   )}
                 </Group>
-                
-                {/* Progress bar for timed notifications */}
-                {!notification.persistent && notification.duration && (
-                  <div 
-                    style={{
-                      marginTop: '8px',
-                      height: '2px',
-                      backgroundColor: `var(--mantine-color-${getNotificationColor(notification.type)}-2)`,
-                      borderRadius: '1px',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <div
-                      style={{
-                        height: '100%',
-                        backgroundColor: `var(--mantine-color-${getNotificationColor(notification.type)}-5)`,
-                        width: '100%',
-                        animation: `shrink ${notification.duration}ms linear`,
-                        transformOrigin: 'left',
-                      }}
-                    />
-                  </div>
-                )}
               </Paper>
             )}
           </Transition>
         ))}
       </Stack>
-      
-      {/* Add CSS animation for progress bar */}
-      <style>
-        {`
-          @keyframes shrink {
-            from {
-              transform: scaleX(1);
-            }
-            to {
-              transform: scaleX(0);
-            }
-          }
-        `}
-      </style>
     </div>
   );
 };
