@@ -18,7 +18,7 @@ import {
   Heart, 
   ChevronLeft, 
   ChevronRight, 
-  Sparkles
+  Sparkles,
 } from 'lucide-react';
 import { useGameStore, useUIStore, useAnimalStore } from '@/stores';
 import { type Animal } from '@/types';
@@ -27,7 +27,7 @@ import AnimalSprite from '@/components/Animals/AnimalSprite';
 const Rescue: React.FC = () => {
   const { getShelterOccupancy } = useGameStore();
   const { addQuickNotification, isMobile } = useUIStore();
-  const { createRandomAnimal, addAnimal } = useAnimalStore();
+  const { createRandomAnimal, addAnimal, animals } = useAnimalStore();
   
   const [adoptableAnimals, setAdoptableAnimals] = useState<Animal[]>([]);
   const [currentAnimalIndex, setCurrentAnimalIndex] = useState(0);
@@ -41,7 +41,6 @@ const Rescue: React.FC = () => {
       const newAnimals: Animal[] = [];
       for (let i = 0; i < 5; i++) {
         const animal = createRandomAnimal();
-        // Set these animals as intake (not in shelter yet)
         animal.status = 'intake';
         animal.daysInShelter = 0;
         newAnimals.push(animal);
@@ -67,15 +66,15 @@ const Rescue: React.FC = () => {
     );
   };
 
-  const handleAdoptAnimal = async () => {
-    if (!currentAnimal || !canAdopt) return;
+  const handleAdoptAnimal = async (animalIndex?: number) => {
+    const targetAnimal = animalIndex !== undefined ? adoptableAnimals[animalIndex] : currentAnimal;
+    if (!targetAnimal || !canAdopt) return;
 
     setIsLoading(true);
 
     try {
-      // Add animal to shelter
       const adoptedAnimal = { 
-        ...currentAnimal, 
+        ...targetAnimal, 
         status: 'needs_care' as const,
         arrivalDate: new Date(),
         daysInShelter: 0
@@ -83,15 +82,14 @@ const Rescue: React.FC = () => {
       
       addAnimal(adoptedAnimal);
 
-      // Generate a new animal to replace the adopted one
       const newAnimal = createRandomAnimal();
       newAnimal.status = 'intake';
       newAnimal.daysInShelter = 0;
 
-      // Replace the adopted animal in the available list
+      const replaceIndex = animalIndex !== undefined ? animalIndex : currentAnimalIndex;
       setAdoptableAnimals(prev => {
         const newList = [...prev];
-        newList[currentAnimalIndex] = newAnimal;
+        newList[replaceIndex] = newAnimal;
         return newList;
       });
 
@@ -101,11 +99,12 @@ const Rescue: React.FC = () => {
         `${adoptedAnimal.name} has joined your shelter. Show them some love!`
       );
 
-      // Move to next animal
-      handleNextAnimal();
+      if (animalIndex === undefined) {
+        handleNextAnimal();
+      }
 
     } catch (error) {
-      addQuickNotification('error', 'Adoption failed', 'Something went wrong. Please try again.');
+      addQuickNotification('error', 'Rescue failed', 'Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -135,14 +134,14 @@ const Rescue: React.FC = () => {
     }
     setAdoptableAnimals(newAnimals);
     setCurrentAnimalIndex(0);
-          addQuickNotification('info', 'New animals available!', 'The rescue center has been refreshed with new animals.');
+    addQuickNotification('info', 'New animals available!', 'The rescue center has been refreshed with new animals.');
   };
 
   if (!currentAnimal) {
     return (
       <Container size="xl" px={0}>
         <Paper p="xl" radius="md" ta="center">
-          <Text size="xl" mb="md">🐕 Loading adoptable animals...</Text>
+          <Text size="xl" mb="md">🐕 Loading rescue animals...</Text>
         </Paper>
       </Container>
     );
@@ -478,7 +477,7 @@ const Rescue: React.FC = () => {
                       loading={isLoading && currentAnimalIndex === index}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleAdoptAnimal();
+                        handleAdoptAnimal(index);
                       }}
                       leftSection={<Heart size={16} />}
                     >
@@ -490,6 +489,23 @@ const Rescue: React.FC = () => {
             </SimpleGrid>
           </Stack>
         )}
+        {/* Stats Footer */}
+        <Paper p="md" radius="md" bg="gray.0">
+          <Group justify="space-around" ta="center">
+            <Box>
+              <Text size="lg" fw={700} c="pink.6">{animals.length}</Text>
+              <Text size="xs" c="gray.6">Animals in Shelter</Text>
+            </Box>
+            <Box>
+              <Text size="lg" fw={700} c="green.6">{occupancy.max - occupancy.current}</Text>
+              <Text size="xs" c="gray.6">Space Available</Text>
+            </Box>
+            <Box>
+              <Text size="lg" fw={700} c="blue.6">{adoptableAnimals.length}</Text>
+              <Text size="xs" c="gray.6">Awaiting Rescue</Text>
+            </Box>
+          </Group>
+        </Paper>
       </Stack>
     </Container>
   );

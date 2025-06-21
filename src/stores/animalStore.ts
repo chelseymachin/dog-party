@@ -1,7 +1,6 @@
-// src/stores/animalStore.ts
-
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { randomDogName } from 'dog-names';
 import { 
   type Animal, 
   type AnimalStatus, 
@@ -370,9 +369,9 @@ export const useAnimalStore = create<AnimalStore>()(
         const colors = breed.availableColors;
         const color = colors[Math.floor(Math.random() * colors.length)];
         
-        const names = ['Buddy', 'Luna', 'Max', 'Bella', 'Charlie', 'Daisy', 'Rocky', 'Lily', 'Cooper', 'Ruby'];
-        const name = names[Math.floor(Math.random() * names.length)];
-        
+
+        const name = randomDogName();
+
         const maxEnergy = calculateMaxEnergy({ size: breed.size, age: 'adult', breed: breed.name });
         
         const newAnimal: Animal = {
