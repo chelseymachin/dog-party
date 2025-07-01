@@ -171,7 +171,7 @@ const Shop: React.FC = () => {
 
         {/* Tabs */}
         <Tabs color="pink" value={activeTab} onChange={(value) => setActiveTab(value as string)}>
-          <Tabs.List>
+          <Tabs.List justify={isMobile ? 'center' : 'flex-start'}>
             <Tabs.Tab color="pink" value="shop" leftSection={<ShoppingCart size={16} />}>
               Shop
             </Tabs.Tab>
