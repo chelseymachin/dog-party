@@ -184,7 +184,7 @@ const Dashboard: React.FC = () => {
               {animals.length > 0 && (
                 <Group gap="xs">
                   <Text size="sm" c="gray.6">
-                    {animalsNeedingCare.length} need care
+                    {animalsNeedingCare.length} need{animalsNeedingCare.length === 1 ? 's' : ''} care
                   </Text>
                   <Text size="sm" c="gray.6">•</Text>
                   <Text size="sm" c="gray.6">
