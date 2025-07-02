@@ -131,8 +131,8 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
       <Stack gap="lg" p="md">
         {/* Header with Animal Info */}
         <Paper p="lg" radius="md" bg="pink.0" style={{ border: '1px solid var(--mantine-color-pink-2)', marginTop: '16px' }}>
-          <Flex justify="space-between" align="flex-start" mb="md">
-            <Group align="flex-start" gap="lg">
+          <Flex justify="center" align="center" mb="md">
+            <Group align="center" gap="lg">
               <AnimalSprite
                 breed={animal.breed}
                 color={animal.color}
@@ -141,7 +141,7 @@ const AnimalModal: React.FC<AnimalModalProps> = ({ animalId }) => {
                 onAnimationComplete={handleAnimationComplete}
               />
               
-              <div style={{ alignSelf: 'flex-start', width: '100%' }}>
+              <div style={{ flex: 1 }}>
                 <Group gap="xs" mb={4}>
                   <Text size="xl" fw={700} c="pink.8">
                     {animal.name}
