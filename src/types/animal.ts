@@ -124,7 +124,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    specialTraits: ['affectionate', 'good with kids', 'independent'],
     availableColors: ['black', 'orange', 'red'],
     animationData: {
       defaultIdle: 'standing',
@@ -156,7 +156,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.8,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8,
-    specialTraits: ['playful', 'affectionate', 'small_space_friendly'],
+    specialTraits: ['playful', 'affectionate', 'small space friendly'],
     availableColors: ['white', 'black'],
     animationData: {
       defaultIdle: 'idle',
@@ -188,7 +188,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 0.8,
     adoptionDifficulty: 1.1,
-    specialTraits: ['small_space_friendly', 'protective', 'needs_patience'],
+    specialTraits: ['small space friendly', 'protective', 'needs patience'],
     availableColors: ['black', 'gray', 'tan'],
     animationData: {
       defaultIdle: 'idle',
@@ -220,7 +220,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 1.0,
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
-    specialTraits: ['small_space_friendly', 'protective', 'playful'],
+    specialTraits: ['small space friendly', 'protective', 'playful'],
     availableColors: ['black', 'orange', 'spotted', 'wizard'],
     animationData: {
       defaultIdle: 'idle',
@@ -252,7 +252,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    specialTraits: ['affectionate', 'good with kids', 'independent'],
     availableColors: ['black', 'brown', 'tricolor'],
     animationData: {
       defaultIdle: 'standing',
@@ -284,7 +284,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    specialTraits: ['affectionate', 'good with kids', 'independent'],
     availableColors: ['black', 'gray', 'red'],
     animationData: {
       defaultIdle: 'standing',
@@ -316,7 +316,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    specialTraits: ['affectionate', 'good with kids', 'independent'],
     availableColors: ['black', 'gray', 'panda'],
     animationData: {
       defaultIdle: 'standing',
@@ -348,7 +348,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    specialTraits: ['affectionate', 'good with kids', 'independent'],
     availableColors: ['black', 'gray', 'tan'],
     animationData: {
       defaultIdle: 'standing',
@@ -380,7 +380,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    specialTraits: ['affectionate', 'good with kids', 'independent'],
     availableColors: ['black', 'tan', 'white'],
     animationData: {
       defaultIdle: 'standing',
@@ -412,7 +412,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    specialTraits: ['affectionate', 'good with kids', 'independent'],
     availableColors: ['blue', 'gray', 'brown'],
     animationData: {
       defaultIdle: 'standing',
@@ -444,7 +444,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 1.0,
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
-    specialTraits: ['small_space_friendly', 'protective', 'playful'],
+    specialTraits: ['small space friendly', 'protective', 'playful'],
     availableColors: ['apricot', 'ash', 'ivory'],
     animationData: {
       defaultIdle: 'idle',
@@ -476,7 +476,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 0.9,
     happinessTendency: 1.2,
     adoptionDifficulty: 0.8, 
-    specialTraits: ['affectionate', 'good_with_kids', 'independent'],
+    specialTraits: ['affectionate', 'good with kids', 'independent'],
     availableColors: ['gray', 'black', 'brown'],
     animationData: {
       defaultIdle: 'standing',
@@ -508,7 +508,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 1.0,
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
-    specialTraits: ['small_space_friendly', 'protective', 'playful'],
+    specialTraits: ['small space friendly', 'protective', 'playful'],
     availableColors: ['black', 'orange', 'white'],
     animationData: {
       defaultIdle: 'idle',
@@ -540,7 +540,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 1.0,
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
-    specialTraits: ['small_space_friendly', 'protective', 'playful'],
+    specialTraits: ['small space friendly', 'protective', 'playful'],
     availableColors: ['apricot', 'brown'],
     animationData: {
       defaultIdle: 'idle',
@@ -572,7 +572,7 @@ export const ANIMAL_BREEDS: Record<string, AnimalBreed> = {
     healthTendency: 1.0,
     happinessTendency: 1.0,
     adoptionDifficulty: 1.2,
-    specialTraits: ['small_space_friendly', 'protective', 'playful'],
+    specialTraits: ['small space friendly', 'protective', 'playful'],
     availableColors: ['black', 'cream', 'orange'],
     animationData: {
       defaultIdle: 'standing',
